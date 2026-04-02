@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Moon · The Hedge</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cinzel:wght@400;500&display=swap');
+
+:root {
+  --night: #09080f;
+  --gold: #b8923a;
+  --gold2: #d4ae6a;
+  --parch: #e8e0d0;
+  --muted: #7a7060;
+  --soft: #a89880;
+  --border: rgba(184,146,58,0.15);
+  --surface: rgba(255,255,255,0.02);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--night);
+  color: var(--parch);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(74,100,138,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(184,146,58,0.04) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+.stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 5% 10%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 18% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 35% 6%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 52% 28%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 68% 55%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 82% 18%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 65%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 12% 78%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 88%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 92%, rgba(255,255,255,0.3) 0%, transparent 100%);
+}
+
+.wrap {
+  position: relative; z-index: 1;
+  max-width: 680px; margin: 0 auto;
+  padding: 0 28px 120px;
+}
+
+/* ── NAV ── */
+.back {
+  display: inline-block;
+  padding: 20px 0 0;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.back:hover { color: var(--gold); }
+
+/* ── HEADER ── */
+header {
+  text-align: center;
+  padding: 48px 0 52px;
+}
+
+.phase-live {
+  font-size: 72px;
+  display: block;
+  margin-bottom: 16px;
+  animation: breathe 8s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+.page-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.45em;
+  color: var(--gold);
+  text-transform: uppercase;
+  opacity: 0.7;
+  display: block;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 400;
+  color: var(--gold2);
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 40px rgba(184,146,58,0.25);
+  margin-bottom: 6px;
+}
+
+.header-sub {
+  font-style: italic;
+  font-size: 16px;
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 44px 0 36px; opacity: 0.35;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+.divider span { color: var(--gold); font-size: 14px; }
+
+/* ── TONIGHT ── */
+.tonight {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 36px 32px;
+  margin-bottom: 4px;
+  position: relative;
+  text-align: center;
+}
+.tonight::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--gold2), transparent);
+  opacity: 0.5;
+}
+
+.tonight-label {
+  font-family: 'Cinzel', serif;
+  font-size: 8px; letter-spacing: 0.45em;
+  color: var(--gold); text-transform: uppercase;
+  opacity: 0.6; display: block; margin-bottom: 20px;
+}
+
+.tonight-glyph {
+  font-size: 80px; display: block; margin-bottom: 16px;
+  line-height: 1; animation: breathe 5s ease-in-out infinite;
+}
+
+.tonight-phase {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; letter-spacing: 0.3em;
+  color: var(--gold2); text-transform: uppercase;
+  display: block; margin-bottom: 6px;
+}
+
+.tonight-name {
+  font-style: italic; font-size: 26px;
+  color: var(--parch); display: block; margin-bottom: 6px;
+}
+
+.tonight-keyword {
+  font-family: 'Cinzel', serif;
+  font-size: 9px; letter-spacing: 0.25em;
+  color: var(--gold); text-transform: uppercase;
+  display: block; margin-bottom: 16px; opacity: 0.8;
+}
+
+.tonight-illumination {
+  font-size: 13px; color: var(--muted);
+  font-style: italic; display: block; margin-bottom: 16px;
+}
+
+.tonight-ritual {
+  font-size: 16px; color: var(--soft);
+  font-style: italic; line-height: 1.7;
+  max-width: 460px; margin: 0 auto 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.tonight-hedge {
+  font-size: 14px; color: var(--muted);
+  line-height: 1.7; max-width: 460px; margin: 0 auto;
+}
+
+.tonight-date {
+  display: block; margin-top: 20px;
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.2em; color: var(--muted);
+  text-transform: uppercase; opacity: 0.5;
+}
+
+/* ── SECTION HEADING ── */
+.sec-tag {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.4em; color: var(--gold);
+  text-transform: uppercase; display: block;
+  margin-bottom: 6px; opacity: 0.7;
+}
+
+.sec-title {
+  font-style: italic; font-size: 24px;
+  color: var(--parch); margin-bottom: 20px;
+  font-weight: 400;
+}
+
+/* ── PHASE CARDS ── */
+.phase-list { display: grid; gap: 3px; margin: 24px 0; }
+
+.phase-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--phase-color, var(--gold));
+  padding: 22px 24px;
+  cursor: pointer;
+  transition: background 0.25s;
+  position: relative;
+}
+
+.phase-card:hover,
+.phase-card.open {
+  background: rgba(184,146,58,0.04);
+}
+
+.phase-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.phase-card-glyph { font-size: 28px; flex-shrink: 0; }
+
+.phase-card-info { flex: 1; }
+
+.phase-card-name {
+  font-style: italic; font-size: 18px;
+  color: var(--parch); display: block; margin-bottom: 2px;
+}
+
+.phase-card-key {
+  font-family: 'Cinzel', serif; font-size: 8.5px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--phase-color, var(--gold)); opacity: 0.8;
+}
+
+.phase-card-toggle {
+  color: var(--phase-color, var(--gold));
+  opacity: 0.4; font-size: 16px;
+  transition: transform 0.3s, opacity 0.3s;
+  flex-shrink: 0;
+}
+.phase-card.open .phase-card-toggle {
+  transform: rotate(180deg); opacity: 0.8;
+}
+
+.phase-card-body {
+  display: none;
+  padding-top: 18px;
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.phase-card.open .phase-card-body { display: block; }
+
+.phase-body-text {
+  font-size: 16px; color: var(--soft);
+  line-height: 1.75; margin-bottom: 14px;
+}
+
+.phase-body-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.phase-body-item {}
+.phase-body-item-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--phase-color, var(--gold)); opacity: 0.7;
+  display: block; margin-bottom: 4px;
+}
+.phase-body-item-val {
+  font-size: 14px; color: var(--muted);
+  font-style: italic; line-height: 1.55;
+}
+
+.phase-body-journal {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: rgba(0,0,0,0.2);
+  border-left: 2px solid var(--phase-color, var(--gold));
+  font-size: 14px; font-style: italic;
+  color: var(--muted); line-height: 1.65;
+}
+.phase-body-journal::before {
+  content: 'Journal prompt — ';
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.7;
+  font-style: normal;
+}
+
+/* ── HEDGE NOTES ── */
+.hedge-notes {
+  margin: 40px 0;
+  padding: 32px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  position: relative;
+}
+.hedge-notes::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(to right, transparent, rgba(122,184,200,0.5), transparent);
+}
+
+.hedge-notes h3 {
+  font-style: italic; font-size: 20px;
+  color: #7ab8c8; margin-bottom: 16px;
+  font-weight: 400;
+}
+
+.hedge-notes p {
+  font-size: 16px; color: var(--soft);
+  line-height: 1.8; margin-bottom: 12px;
+}
+.hedge-notes p:last-child { margin-bottom: 0; }
+.hedge-notes em { color: var(--gold2); }
+.hedge-notes strong { color: var(--parch); font-weight: 500; }
+
+/* ── RITUAL GUIDE ── */
+.ritual-section { margin: 40px 0; }
+
+.ritual-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 28px;
+  margin-bottom: 3px;
+}
+
+.ritual-card h4 {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 12px; opacity: 0.8;
+}
+
+.ritual-card p {
+  font-size: 15.5px; color: var(--soft);
+  line-height: 1.75;
+}
+
+.ritual-card em { color: var(--gold2); }
+.ritual-card strong { color: var(--parch); font-weight: 500; }
+
+/* ── CYCLE ── */
+.cycle-note {
+  text-align: center; padding: 32px 24px;
+  border: 1px solid var(--border);
+  margin: 40px 0;
+}
+.cycle-note p {
+  font-style: italic; font-size: 16px;
+  color: var(--soft); line-height: 1.8;
+  max-width: 460px; margin: 0 auto;
+}
+.cycle-note em { color: var(--gold2); }
+
+/* ── FOOTER ── */
+.page-footer {
+  text-align: center; padding: 40px 0 0;
+  border-top: 1px solid var(--border);
+}
+.page-footer p { font-size: 13px; color: var(--muted); font-style: italic; }
+.page-footer a { color: var(--gold); text-decoration: none; opacity: 0.7; }
+.page-footer a:hover { opacity: 1; }
+
+@media (max-width: 480px) {
+  .wrap { padding: 0 20px 80px; }
+  .tonight { padding: 28px 20px; }
+  .phase-body-grid { grid-template-columns: 1fr; }
+  .hedge-notes, .ritual-card { padding: 22px 18px; }
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrap">
+
+  <a class="back" href="index.html">← The Hedge</a>
+
+  <header>
+    <span class="phase-live" id="headerGlyph">☽</span>
+    <span class="page-tag">The Hedge · Grimoire</span>
+    <h1>The Moon</h1>
+    <div class="header-sub">Eight phases · the hedge witch's clock</div>
+  </header>
+
+  <!-- TONIGHT -->
+  <div class="tonight">
+    <span class="tonight-label">Tonight</span>
+    <span class="tonight-glyph" id="tonightGlyph">☽</span>
+    <span class="tonight-phase" id="tonightKeyword"></span>
+    <span class="tonight-name" id="tonightName"></span>
+    <span class="tonight-illumination" id="tonightIllum"></span>
+    <p class="tonight-ritual" id="tonightRitual"></p>
+    <p class="tonight-hedge" id="tonightHedge"></p>
+    <span class="tonight-date" id="tonightDate"></span>
+  </div>
+
+  <div class="divider"><span>✦</span></div>
+
+  <!-- ALL EIGHT PHASES -->
+  <span class="sec-tag">The eight phases</span>
+  <h2 class="sec-title">The Lunar Cycle</h2>
+
+  <div class="phase-list" id="phaseList"></div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- HEDGE WITCH & THE MOON -->
+  <div class="hedge-notes">
+    <h3>The Moon & the Hedge Witch</h3>
+    <p>For the hedge witch, the moon is not decoration. It is the <em>primary timer</em> of your practice — more reliable than any calendar, more honest than any clock. The moon governs when the veil thins, when spirits move more freely, when your own psychic sensitivity peaks.</p>
+    <p><strong>New and dark moons:</strong> The veil is thin from within. Your own unconscious opens. Best for shadow work, deep dreaming, setting intentions that come from the quiet rather than the noise.</p>
+    <p><strong>Full moon:</strong> The veil is thin from without. Spirits, Fae, and ancestral energies move more freely. The most potent night for hedge riding — and the most important night to be <em>protected before you cross.</em></p>
+    <p><strong>Waning phases:</strong> Releasing, banishing, cutting. If something needs to end — a pattern, a relationship, a belief you've outgrown — work with the waning moon. It is already pulling things away.</p>
+    <p><strong>Liminal moon moments:</strong> The exact moment of phase change — new to waxing, full to waning — is a threshold in time. A crossing. The hedge witch feels these shifts in the body before knowing them with the mind.</p>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- RITUAL GUIDE -->
+  <span class="sec-tag">Simple ritual guidance</span>
+  <h2 class="sec-title">How to Work Each Phase</h2>
+
+  <div class="ritual-section">
+    <div class="ritual-card">
+      <h4>🌑 New Moon — The Planting</h4>
+      <p>Sit in darkness before lighting anything. Let your eyes adjust. In that dark, speak your intention aloud — once, clearly, as a declaration not a wish. <em>Light a single candle after.</em> The flame is the intention made visible. Write one sentence in your notebook: what you are calling in, not how.</p>
+    </div>
+    <div class="ritual-card">
+      <h4>🌕 Full Moon — The Peak</h4>
+      <p>Do the LBRP first — always. Then sit with two objects: one that represents what you are receiving, one that represents what you are releasing. <em>Hold the receiving object to your heart. Hold the releasing object loosely in your open palm.</em> When ready, set the releasing object down — outside if possible, at the base of a tree or stone. Leave it. Don't take it back.</p>
+    </div>
+    <div class="ritual-card">
+      <h4>🌑→🌕 Waxing — Building the Work</h4>
+      <p>Each night of the waxing moon, do one small act in the direction of your intention. Not a ritual — an act. Send the message. Make the appointment. Write the page. <em>Magic that doesn't move in the physical world stays only in the mind.</em></p>
+    </div>
+    <div class="ritual-card">
+      <h4>🌕→🌑 Waning — The Releasing</h4>
+      <p>Write what you are releasing on paper. Be specific — not 'anxiety' but 'the belief that I am too much for people to handle.' <em>Burn it on the last quarter or dark moon.</em> Watch the smoke carry it. Don't journal about it after. Let it be gone.</p>
+    </div>
+    <div class="ritual-card">
+      <h4>🌘 Dark Moon — Before the New</h4>
+      <p>Rest. Do nothing magical. This is the fallow phase — the soil between harvests. <em>The hedge witch who cannot rest cannot ride.</em> Sleep more. Dream consciously. Let the cycle empty completely before it fills again.</p>
+    </div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- CYCLE NOTE -->
+  <div class="cycle-note">
+    <p>Your menstrual cycle mirrors the lunar cycle.<br>
+    Your body already knows these phases from the inside.<br>
+    <em>The moon is not separate from you. It is a larger version of the same rhythm.</em></p>
+  </div>
+
+  <div class="divider"><span>☽</span></div>
+
+  <div style="text-align:center; padding: 20px 0 40px;">
+    <p style="font-style:italic; font-size:16px; color:var(--muted); max-width:420px; margin:0 auto; line-height:1.8;">
+      "She is nocturnal, the moon.<br>
+      She knows what the sun refuses to see."
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <p>☽ ✦ ☾</p>
+    <p style="margin-top: 8px;"><a href="index.html">← Return to The Hedge</a></p>
+  </div>
+
+</div>
+
+<script>
+// ── MOON DATA ─────────────────────────────────────────────
+const PHASES = [
+  {
+    glyph: "🌑", name: "New Moon", key: "Plant · Intend",
+    color: "#c9a84c",
+    desc: "The dark moon. Sky empty. Fertile ground. The most potent moment for planting intentions — not wishes, declarations. Speak what doesn't exist yet as if it already does.",
+    hedge: "Strongest night for inner journeying. The dark is not empty — it is full of potential. Shadow work done tonight goes deep and stays.",
+    magick: "Setting intentions, new beginnings, shadow work, inner journeying",
+    elements: "Earth, darkness, silence, soil",
+    herbs: "Mugwort, black salt, myrrh, rosemary",
+    journal: "What do I want to call into my life that has never existed here before?"
+  },
+  {
+    glyph: "🌒", name: "Waxing Crescent", key: "Declare · Commit",
+    color: "#8ab87a",
+    desc: "Energy stirs. The first sliver of light after darkness. Your intention needs a voice now — write it, speak it aloud, commit to it with your body. The seed is in the ground. Water it.",
+    hedge: "A good time to begin building relationship with a plant ally or place. Energy is growing — start conversations you want to deepen.",
+    magick: "Commitment spells, building energy, first steps, communication",
+    elements: "Air, first light, green shoots",
+    herbs: "Basil, mint, clover, hawthorn bud",
+    journal: "Am I willing to do what my intention actually requires of me?"
+  },
+  {
+    glyph: "🌓", name: "First Quarter", key: "Act · Push",
+    color: "#7ab8c8",
+    desc: "Half light, half dark — the tension of becoming. This moon asks you to move. Not to plan, not to prepare — to act. Face whatever has been resisting your intention. Push through it.",
+    hedge: "The hedge rider's action moon. If you've been circling a practice without beginning — hedge riding, LBRP, dream journaling — begin it tonight.",
+    magick: "Courage work, breaking through blocks, decisive action, momentum",
+    elements: "Fire, wind, forward motion",
+    herbs: "Nettle, ginger, dragon's blood, cinnamon",
+    journal: "What one action have I been avoiding? What would change if I did it tonight?"
+  },
+  {
+    glyph: "🌔", name: "Waxing Gibbous", key: "Refine · Align",
+    color: "#b8a8d8",
+    desc: "Almost full. The work is visible now — you can see what's growing and what still needs tending. This is the adjustment phase. Not starting over, refining.",
+    hedge: "Review your recent hedge work, dreams, and journaling. What symbol or message keeps returning? It is asking for your attention before the full moon peaks.",
+    magick: "Refinement, fine-tuning, clearing obstacles, preparation",
+    elements: "Water, moonlight, attention",
+    herbs: "Lavender, chamomile, lemon balm",
+    journal: "What in my current intention needs adjusting before the full moon?"
+  },
+  {
+    glyph: "🌕", name: "Full Moon", key: "Receive · Release",
+    color: "#e8c97a",
+    desc: "Peak. Everything is illuminated — including what you didn't want to see. Emotions run high not as dysfunction but as data. This moon both gives and takes. You receive the fullness of what you've been building, and you release what no longer belongs.",
+    hedge: "The most powerful night for hedge riding — and the most important night to protect yourself first. Always do the LBRP before crossing. The veil is thinnest and spirits move most freely. Your psychic senses are at their peak.",
+    magick: "Riding, divination, release rituals, receiving, spirit communication, charging tools",
+    elements: "All four elements at peak, the fifth element — spirit",
+    herbs: "Mugwort, rose, frankincense, moonflower, white sage",
+    journal: "What is the moon showing me tonight that I have been refusing to see?"
+  },
+  {
+    glyph: "🌖", name: "Waning Gibbous", key: "Gratitude · Give",
+    color: "#c47850",
+    desc: "The harvest phase. You've received the peak — now let what you've been given flow outward. Gratitude is not passive here. It is an active practice of acknowledging what arrived and releasing the grasping.",
+    hedge: "Give an offering to the spirits or plant allies you've been working with. Gratitude maintains relationship. The hedge witch who only takes eventually walks alone.",
+    magick: "Gratitude rituals, giving back to the land, offerings, abundance sharing",
+    elements: "Earth, harvest, the giving hand",
+    herbs: "Elder, apple, oak, wheat, honey",
+    journal: "What arrived this cycle that I haven't fully acknowledged? What do I owe gratitude for?"
+  },
+  {
+    glyph: "🌗", name: "Last Quarter", key: "Let Go · Cut",
+    color: "#d4869a",
+    desc: "Half dark again — but this time the darkness is growing. This is the deliberate releasing moon. Not passive fading but active cutting. What needs to end? What pattern, belief, relationship, or habit has been taking energy it no longer deserves?",
+    hedge: "Shadow work done now has particular power. The Crone is present in the waning light. She will help you see clearly what needs to go — but she does not soften the truth.",
+    magick: "Banishing, cord cutting, shadow work, breaking habits, releasing the past",
+    elements: "Water, autumn, the cutting blade",
+    herbs: "Blackthorn, wormwood, mullein, black pepper",
+    journal: "What am I still holding that was supposed to be gone by now? Why?"
+  },
+  {
+    glyph: "🌘", name: "Waning Crescent", key: "Rest · Surrender",
+    color: "#8a8070",
+    desc: "The last breath before dark. Empty. The cycle is completing. Do not start new things here — let everything wind down. Rest is not laziness in this phase, it is the practice. The soil between harvests. The silence between notes.",
+    hedge: "This is the liminal moon — thin, quiet, between. Dreams are often vivid and meaningful. Keep your journal close. Do not hedge ride here unless experienced — the between-space is strange when the moon is dark.",
+    magick: "Rest, deep dreaming, preparation, letting the cycle empty, gentle reflection",
+    elements: "Void, silence, the space between",
+    herbs: "Valerian, passionflower, blue lotus, poppy",
+    journal: "What have I learned this cycle that I want to carry into the next?"
+  }
+];
+
+// ── MOON CALCULATION ──────────────────────────────────────
+function getMoonAge(date) {
+  const knownNewMoon = new Date(Date.UTC(2000, 0, 6, 18, 14, 0));
+  const synodicMonth = 29.53059;
+  const diff = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
+  const cycles = diff / synodicMonth;
+  return (cycles - Math.floor(cycles)) * synodicMonth;
+}
+
+function getPhaseIndex(age) {
+  if (age < 1.85)  return 0; // New
+  if (age < 7.38)  return 1; // Waxing Crescent
+  if (age < 9.22)  return 2; // First Quarter
+  if (age < 14.77) return 3; // Waxing Gibbous
+  if (age < 16.61) return 4; // Full
+  if (age < 22.15) return 5; // Waning Gibbous
+  if (age < 23.99) return 6; // Last Quarter
+  return 7;                   // Waning Crescent
+}
+
+function getIllumination(age) {
+  return Math.round((1 - Math.cos((age / 29.53059) * 2 * Math.PI)) / 2 * 100);
+}
+
+// ── RENDER TONIGHT ────────────────────────────────────────
+const now = new Date();
+const age = getMoonAge(now);
+const idx = getPhaseIndex(age);
+const phase = PHASES[idx];
+const illum = getIllumination(age);
+
+document.getElementById('headerGlyph').textContent = phase.glyph;
+document.getElementById('tonightGlyph').textContent = phase.glyph;
+document.getElementById('tonightKeyword').textContent = phase.key;
+document.getElementById('tonightName').textContent = phase.name;
+document.getElementById('tonightIllum').textContent = illum + '% illuminated';
+document.getElementById('tonightRitual').textContent = phase.desc.split('.')[0] + '.';
+document.getElementById('tonightHedge').textContent = phase.hedge;
+document.getElementById('tonightDate').textContent =
+  now.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+// ── RENDER PHASE LIST ─────────────────────────────────────
+const list = document.getElementById('phaseList');
+PHASES.forEach((p, i) => {
+  const isActive = i === idx;
+  const card = document.createElement('div');
+  card.className = 'phase-card' + (isActive ? ' open' : '');
+  card.style.setProperty('--phase-color', p.color);
+  card.innerHTML = `
+    <div class="phase-card-header">
+      <span class="phase-card-glyph">${p.glyph}</span>
+      <div class="phase-card-info">
+        <span class="phase-card-name">${p.name}${isActive ? ' <span style="font-size:11px;color:'+p.color+';font-family:Cinzel,serif;letter-spacing:0.2em;font-style:normal;opacity:0.8;">· TONIGHT</span>' : ''}</span>
+        <span class="phase-card-key">${p.key}</span>
+      </div>
+      <span class="phase-card-toggle">▾</span>
+    </div>
+    <div class="phase-card-body">
+      <p class="phase-body-text">${p.desc}</p>
+      <p class="phase-body-text" style="color:rgba(122,184,200,0.85);"><strong style="font-family:Cinzel,serif;font-size:8.5px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.7;font-style:normal;">Hedge work — </strong>${p.hedge}</p>
+      <div class="phase-body-grid">
+        <div class="phase-body-item">
+          <span class="phase-body-item-label">Magick</span>
+          <span class="phase-body-item-val">${p.magick}</span>
+        </div>
+        <div class="phase-body-item">
+          <span class="phase-body-item-label">Elements</span>
+          <span class="phase-body-item-val">${p.elements}</span>
+        </div>
+        <div class="phase-body-item">
+          <span class="phase-body-item-label">Herbs & allies</span>
+          <span class="phase-body-item-val">${p.herbs}</span>
+        </div>
+      </div>
+      <div class="phase-body-journal">${p.journal}</div>
+    </div>
+  `;
+  card.addEventListener('click', () => {
+    card.classList.toggle('open');
+  });
+  list.appendChild(card);
+});
+</script>
+</body>
+</html>
