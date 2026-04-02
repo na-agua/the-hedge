@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Shadow · The Hedge</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cinzel:wght@400;500&display=swap');
+
+:root {
+  --night: #09080f;
+  --gold: #b8923a;
+  --gold2: #d4ae6a;
+  --parch: #e8e0d0;
+  --muted: #7a7060;
+  --soft: #a89880;
+  --rose: #c87880;
+  --rose2: #e8a8b8;
+  --border: rgba(184,146,58,0.12);
+  --border-rose: rgba(200,120,128,0.2);
+  --surface: rgba(255,255,255,0.02);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--night);
+  color: var(--parch);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 40%, rgba(120,60,80,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(60,40,80,0.05) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+.stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 7% 14%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 21% 38%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 38% 7%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 29%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 71% 58%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 16%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 93% 67%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 14% 79%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 47% 89%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 77% 93%, rgba(255,255,255,0.25) 0%, transparent 100%);
+}
+
+.wrap {
+  position: relative; z-index: 1;
+  max-width: 680px; margin: 0 auto;
+  padding: 0 28px 120px;
+}
+
+.back {
+  display: inline-block; padding: 20px 0 0;
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.3em; color: var(--muted);
+  text-decoration: none; text-transform: uppercase;
+  transition: color 0.2s;
+}
+.back:hover { color: var(--rose); }
+
+header { text-align: center; padding: 48px 0 52px; }
+
+.header-glyph {
+  font-size: 56px; display: block; margin-bottom: 16px;
+  animation: breathe 10s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.03); }
+}
+
+.page-tag {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.45em; color: var(--rose);
+  text-transform: uppercase; opacity: 0.7;
+  display: block; margin-bottom: 10px;
+}
+
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 400; color: var(--rose2);
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 40px rgba(200,120,128,0.2);
+  margin-bottom: 6px;
+}
+
+.header-sub {
+  font-style: italic; font-size: 16px;
+  color: var(--muted); opacity: 0.8;
+}
+
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 44px 0 36px; opacity: 0.35;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--rose), transparent);
+}
+.divider span { color: var(--rose); font-size: 14px; }
+
+/* ── OPENING ── */
+.opening {
+  text-align: center; margin-bottom: 48px;
+}
+.opening p {
+  font-style: italic; font-size: 17px;
+  color: var(--soft); line-height: 1.9;
+  max-width: 500px; margin: 0 auto 14px;
+}
+.opening p em { color: var(--rose2); font-style: normal; }
+.opening p strong { color: var(--parch); font-weight: 500; }
+
+/* ── WHAT / WHAT NOT ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px; margin: 28px 0;
+}
+.col-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px 22px;
+  position: relative;
+}
+.col-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1.5px;
+}
+.col-card.is { border-color: var(--border-rose); }
+.col-card.is::before { background: linear-gradient(to right, transparent, var(--rose), transparent); opacity: 0.5; }
+.col-card.not::before { background: linear-gradient(to right, transparent, var(--border), transparent); opacity: 0.5; }
+
+.col-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  display: block; margin-bottom: 14px;
+}
+.col-card.is .col-label { color: var(--rose); }
+.col-card.not .col-label { color: var(--muted); }
+
+.col-card p {
+  font-size: 15px; color: var(--soft);
+  line-height: 1.7; margin-bottom: 10px;
+}
+.col-card p:last-child { margin-bottom: 0; }
+.col-card em { color: var(--rose2); }
+
+/* ── SEC HEADING ── */
+.sec-tag {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.4em; color: var(--rose);
+  text-transform: uppercase; display: block;
+  margin-bottom: 6px; opacity: 0.7;
+}
+.sec-title {
+  font-style: italic; font-size: 24px;
+  color: var(--parch); margin-bottom: 20px; font-weight: 400;
+}
+
+/* ── PROCESS STEPS ── */
+.steps { margin: 24px 0; }
+.step {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 0; margin-bottom: 3px;
+}
+.step-num {
+  background: rgba(200,120,128,0.08);
+  border: 1px solid var(--border-rose);
+  border-right: none;
+  display: flex; align-items: flex-start;
+  justify-content: center;
+  padding-top: 22px;
+  font-family: 'Cinzel', serif; font-size: 11px;
+  color: var(--rose); opacity: 0.7;
+}
+.step-body {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px 22px;
+}
+.step-body h4 {
+  font-style: italic; font-size: 17px;
+  color: var(--rose2); margin-bottom: 8px;
+  font-weight: 400;
+}
+.step-body p {
+  font-size: 15.5px; color: var(--soft); line-height: 1.75;
+}
+.step-body em { color: var(--gold2); }
+.step-body strong { color: var(--parch); font-weight: 500; }
+
+/* ── ARCHETYPES ── */
+.archetypes { display: grid; gap: 3px; margin: 24px 0; }
+.arch-card {
+  background: var(--surface);
+  border: 1px solid var(--border-rose);
+  padding: 22px 24px;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.arch-card:hover, .arch-card.open {
+  background: rgba(200,120,128,0.04);
+}
+.arch-header {
+  display: flex; align-items: center; gap: 14px;
+}
+.arch-glyph { font-size: 26px; flex-shrink: 0; }
+.arch-info { flex: 1; }
+.arch-name {
+  font-style: italic; font-size: 18px;
+  color: var(--parch); display: block; margin-bottom: 2px;
+}
+.arch-tag {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--rose); opacity: 0.7;
+}
+.arch-toggle {
+  color: var(--rose); opacity: 0.4; font-size: 16px;
+  transition: transform 0.3s, opacity 0.3s; flex-shrink: 0;
+}
+.arch-card.open .arch-toggle { transform: rotate(180deg); opacity: 0.8; }
+.arch-body {
+  display: none; padding-top: 16px; margin-top: 14px;
+  border-top: 1px solid var(--border-rose);
+}
+.arch-card.open .arch-body { display: block; }
+.arch-body p {
+  font-size: 15.5px; color: var(--soft);
+  line-height: 1.75; margin-bottom: 10px;
+}
+.arch-body p:last-child { margin-bottom: 0; }
+.arch-body em { color: var(--rose2); }
+.arch-body strong { color: var(--parch); font-weight: 500; }
+.arch-gift {
+  margin-top: 14px; padding: 12px 16px;
+  background: rgba(200,120,128,0.06);
+  border-left: 2px solid var(--rose);
+  font-size: 14px; color: var(--muted);
+  font-style: italic; line-height: 1.6;
+}
+.arch-gift::before {
+  content: 'Hidden gift — ';
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--rose); opacity: 0.8; font-style: normal;
+}
+
+/* ── PROMPTS ── */
+.prompts { margin: 24px 0; }
+.prompt-group {
+  background: var(--surface);
+  border: 1px solid var(--border-rose);
+  padding: 24px; margin-bottom: 3px;
+}
+.prompt-group h4 {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--rose); margin-bottom: 14px; opacity: 0.8;
+}
+.prompt-item {
+  font-style: italic; font-size: 15.5px;
+  color: var(--soft); line-height: 1.7;
+  padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.prompt-item:last-child { border-bottom: none; padding-bottom: 0; }
+.prompt-item::before {
+  content: '☽  ';
+  color: var(--rose); opacity: 0.5; font-style: normal;
+}
+
+/* ── TIMING ── */
+.timing {
+  background: var(--surface);
+  border: 1px solid var(--border-rose);
+  padding: 28px; margin: 28px 0;
+  position: relative;
+}
+.timing::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--rose), transparent);
+  opacity: 0.4;
+}
+.timing h4 {
+  font-style: italic; font-size: 20px;
+  color: var(--rose2); margin-bottom: 16px; font-weight: 400;
+}
+.timing-row {
+  display: flex; gap: 12px; margin-bottom: 10px;
+  align-items: flex-start;
+}
+.timing-glyph { font-size: 18px; flex-shrink: 0; padding-top: 2px; }
+.timing-text { font-size: 15.5px; color: var(--soft); line-height: 1.65; }
+.timing-text strong { color: var(--parch); font-weight: 500; }
+
+/* ── CRONE ── */
+.crone {
+  text-align: center; padding: 40px 24px;
+  border: 1px solid var(--border-rose);
+  margin: 40px 0; position: relative;
+  background: rgba(120,60,80,0.04);
+}
+.crone::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--rose), transparent);
+  opacity: 0.3;
+}
+.crone-glyph {
+  font-size: 48px; display: block; margin-bottom: 14px;
+  animation: breathe 12s ease-in-out infinite;
+}
+.crone p {
+  font-style: italic; font-size: 16px; color: var(--soft);
+  line-height: 1.8; max-width: 460px; margin: 0 auto 10px;
+}
+.crone em { color: var(--rose2); font-style: normal; }
+
+/* ── FOOTER ── */
+.page-footer {
+  text-align: center; padding: 40px 0 0;
+  border-top: 1px solid var(--border);
+}
+.page-footer p { font-size: 13px; color: var(--muted); font-style: italic; }
+.page-footer a { color: var(--rose); text-decoration: none; opacity: 0.7; }
+.page-footer a:hover { opacity: 1; }
+
+@media (max-width: 480px) {
+  .wrap { padding: 0 20px 80px; }
+  .two-col { grid-template-columns: 1fr; }
+  .step { grid-template-columns: 36px 1fr; }
+  .timing-row { flex-direction: column; gap: 4px; }
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrap">
+
+  <a class="back" href="index.html">← The Hedge</a>
+
+  <header>
+    <span class="header-glyph">🖤</span>
+    <span class="page-tag">The Hedge · Grimoire</span>
+    <h1>The Shadow</h1>
+    <div class="header-sub">inner dark · what hides · integration</div>
+  </header>
+
+  <div class="divider"><span>·</span></div>
+
+  <div class="opening">
+    <p>The shadow is not your enemy.</p>
+    <p>It is the part of you that was told to <em>hide</em> —<br>
+    the anger, the grief, the desire, the power<br>
+    that felt unsafe to show.</p>
+    <p><strong>Shadow work is not about fixing yourself.<br>
+    It is about seeing clearly.</strong></p>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- WHAT IT IS / ISN'T -->
+  <div class="two-col">
+    <div class="col-card is">
+      <span class="col-label">What shadow work is</span>
+      <p>Honest looking. Sitting with discomfort without running from it.</p>
+      <p>Finding the <em>gift</em> locked inside the wound.</p>
+      <p>Witnessing yourself without bypassing what you see.</p>
+      <p>Returning again and again to what you'd rather not look at.</p>
+    </div>
+    <div class="col-card not">
+      <span class="col-label">What it is not</span>
+      <p>Therapy or direct trauma healing — that requires a human.</p>
+      <p>Wallowing in pain or retelling your story endlessly.</p>
+      <p>A destination you arrive at and finish.</p>
+      <p>Something that should feel comfortable or resolved.</p>
+    </div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- THE PROCESS -->
+  <span class="sec-tag">The work itself</span>
+  <h2 class="sec-title">The Process</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">I</div>
+      <div class="step-body">
+        <h4>Name the trigger</h4>
+        <p>Be specific. Not <em>'I feel bad'</em> but <em>'when she didn't respond, I felt invisible and worthless.'</em> The more specific you are, the more useful the work. Vague shadow work produces vague insight.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">II</div>
+      <div class="step-body">
+        <h4>Sit with it in your body</h4>
+        <p>Don't fix, analyze, or perform. Where does this feeling live? Chest? Throat? Belly? <em>Stay there for five minutes without moving away.</em> The body holds what the mind refuses.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">III</div>
+      <div class="step-body">
+        <h4>Find the origin</h4>
+        <p>Shadow wounds are usually old. The current trigger is almost never the origin. <strong>When did you first feel exactly this?</strong> How old were you? What was happening? The present situation is borrowing its power from the past.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">IV</div>
+      <div class="step-body">
+        <h4>Find the hidden gift</h4>
+        <p>Every shadow contains the seed of a strength. <em>Shame about anger → anger is protection, healthy boundaries.</em> Fear of abandonment → a deep capacity for love and loyalty. The shadow is not weakness dressed up — it is power that was never given a safe home.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">V</div>
+      <div class="step-body">
+        <h4>The ritual act</h4>
+        <p>Give it a physical form and release it. Write it and burn it. Bury it. Speak it under the waning moon and let the words dissolve into the dark. <strong>Don't journal about it after. Let it be done.</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- SHADOW ARCHETYPES -->
+  <span class="sec-tag">What lives in the dark</span>
+  <h2 class="sec-title">Shadow Archetypes</h2>
+  <p style="font-size:16px; color:var(--muted); font-style:italic; margin-bottom:20px;">These are the most common patterns the shadow takes. Tap each to go deeper.</p>
+
+  <div class="archetypes" id="archetypes"></div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- TIMING -->
+  <div class="timing">
+    <h4>When the shadow is loudest</h4>
+    <div class="timing-row">
+      <span class="timing-glyph">🌘</span>
+      <div class="timing-text"><strong>Waning moon, dark moon</strong> — the veil between you and your own unconscious thins. What was manageable becomes undeniable. This is not dysfunction, it is invitation.</div>
+    </div>
+    <div class="timing-row">
+      <span class="timing-glyph">🍂</span>
+      <div class="timing-text"><strong>Luteal phase (inner autumn)</strong> — Days 20–28 of your cycle. The Enchantress rises. What you've been tolerating all month becomes impossible to ignore. These strong feelings are your most honest self.</div>
+    </div>
+    <div class="timing-row">
+      <span class="timing-glyph">🕯️</span>
+      <div class="timing-text"><strong>Samhain season</strong> — October through early November. The veil between all worlds is thinnest. The shadow is never louder than when the ancestors are close.</div>
+    </div>
+    <div class="timing-row">
+      <span class="timing-glyph">🌑</span>
+      <div class="timing-text"><strong>3am</strong> — the liminal hour. When you wake at 3am with a feeling you can't name, that is your shadow asking to be seen. Keep a notebook beside the bed.</div>
+    </div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- JOURNAL PROMPTS -->
+  <span class="sec-tag">Going deeper</span>
+  <h2 class="sec-title">Journal Prompts</h2>
+
+  <div class="prompts">
+    <div class="prompt-group">
+      <h4>The mirror prompts</h4>
+      <div class="prompt-item">What emotion do I judge most harshly in others? (It lives in me.)</div>
+      <div class="prompt-item">Who do I envy, and what does that envy tell me about what I secretly want?</div>
+      <div class="prompt-item">What behavior in others makes me most angry? (It is asking me to look at myself.)</div>
+    </div>
+    <div class="prompt-group">
+      <h4>The origin prompts</h4>
+      <div class="prompt-item">What do I secretly believe about myself that I would never say aloud?</div>
+      <div class="prompt-item">What did the child version of me need that she didn't receive?</div>
+      <div class="prompt-item">What was I taught to suppress, hide, or be ashamed of?</div>
+    </div>
+    <div class="prompt-group">
+      <h4>The gift prompts</h4>
+      <div class="prompt-item">What would I do if no one was watching and I couldn't disappoint anyone?</div>
+      <div class="prompt-item">What am I most afraid would happen if people saw me fully?</div>
+      <div class="prompt-item">What part of myself have I been punishing, and what would it look like to stop?</div>
+    </div>
+    <div class="prompt-group">
+      <h4>The body prompts</h4>
+      <div class="prompt-item">Where in my body do I hold what I am not allowed to feel?</div>
+      <div class="prompt-item">What does my body do when I am hiding something from myself?</div>
+      <div class="prompt-item">What physical sensation lives just underneath the surface right now?</div>
+    </div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- THE CRONE -->
+  <div class="crone">
+    <span class="crone-glyph">🌑</span>
+    <p>The Crone governs shadow work.</p>
+    <p>She is the third face of the Goddess —<br>
+    after the Maiden's joy and the Mother's fullness<br>
+    comes the Crone's <em>ruthless clarity.</em></p>
+    <p>She does not comfort. She illuminates.<br>
+    She strips away what is not real<br>
+    so you can finally see what is.</p>
+    <p style="margin-top:16px; font-size:14px; color:var(--muted);">
+      When you do shadow work, you are sitting with the Crone.<br>
+      Welcome her. She came because you are ready.
+    </p>
+  </div>
+
+  <div class="divider"><span>☽</span></div>
+
+  <div style="text-align:center; padding: 20px 0 40px;">
+    <p style="font-style:italic; font-size:17px; color:var(--muted); max-width:420px; margin:0 auto; line-height:1.9;">
+      "The wound is the place<br>where the light enters you."
+    </p>
+    <p style="font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.2em; color:var(--rose); opacity:0.6; margin-top:8px;">— Rumi</p>
+  </div>
+
+  <div class="page-footer">
+    <p>☽ ✦ ☾</p>
+    <p style="margin-top: 8px;"><a href="index.html">← Return to The Hedge</a></p>
+  </div>
+
+</div>
+
+<script>
+const ARCHETYPES = [
+  {
+    glyph: "🔥", name: "The Suppressed Rage",
+    tag: "Anger that was never allowed",
+    desc: "You were taught that anger was ugly, dangerous, or unacceptable — especially as a woman. So it went underground. Now it surfaces as resentment, passive resistance, or sudden disproportionate explosions. Or it turned inward and became depression.",
+    body: "Jaw, throat, chest. The held breath. The swallowed words. The fists you don't clench in public.",
+    trigger: "When someone takes up too much space. When a boundary is crossed and you say nothing. When you are treated as less than.",
+    gift: "Rage is protection. It is the part of you that knows your worth and refuses violation. Reclaimed, it becomes fierce boundaries, clarity of purpose, and the refusal to abandon yourself."
+  },
+  {
+    glyph: "🌊", name: "The Grief That Was Never Held",
+    tag: "Loss that had no container",
+    desc: "You cried alone, or not at all. You were told to move on, be strong, not dwell. So the grief pooled somewhere inside you — in the heaviness that has no reason, in the sudden sadness that arrives without warning.",
+    body: "The chest that feels too full. The throat that closes without warning. The exhaustion that is not physical.",
+    trigger: "Beauty. Music. Other people's tenderness. The gap between what you have and what you needed.",
+    gift: "Grief is the measure of love. The capacity for deep sorrow is the same capacity as deep love. Reclaimed, it opens the heart completely — not to more pain, but to more feeling everything."
+  },
+  {
+    glyph: "🌑", name: "The Shame",
+    tag: "The belief that you are fundamentally wrong",
+    desc: "Not guilt — guilt says 'I did something wrong.' Shame says 'I am something wrong.' It is the deepest shadow, the one most carefully hidden. It shapes everything: what you ask for, what you accept, what you believe you deserve.",
+    body: "The physical collapse — the shrinking, the looking away, the wish to disappear. The stomach that drops.",
+    trigger: "Being seen. Being criticized. Making a mistake. Being treated as too much or not enough.",
+    gift: "Shame's hidden gift is radical authenticity. When you stop hiding the part of you that feels wrong, you stop performing entirely. What lives beneath shame is your most real self — unfiltered, unperforming, complete."
+  },
+  {
+    glyph: "👁️", name: "The Power That Was Made Wrong",
+    tag: "Wanting more than you were allowed to want",
+    desc: "You were taught that wanting power, success, recognition, or visibility was selfish, arrogant, too much. So you shrank. You dimmed. You made yourself smaller to keep others comfortable. The ambition went underground and emerged as envy.",
+    body: "The restlessness. The watching others succeed and feeling something sharp and shameful. The half-finished projects.",
+    trigger: "Watching someone else shine in the way you wanted to. Being praised and immediately minimizing it. Starting things and not finishing them.",
+    gift: "Ambition is vitality. The desire to matter, to create, to be seen is life force. Reclaimed, it becomes creative power — the capacity to build something real in the world without apology."
+  },
+  {
+    glyph: "🌿", name: "The Need That Was Too Much",
+    tag: "Depending on others felt dangerous",
+    desc: "You learned early that needing things — attention, comfort, help, love — was burdensome, unwelcome, or unsafe. So you became self-sufficient to the point of isolation. You give without receiving. You help without asking. You are tired in a way that sleep doesn't fix.",
+    body: "The hypervigilance. The constant monitoring of others' moods. The preemptive shrinking. The exhaustion of never putting anything down.",
+    trigger: "Being asked for help by others feels easy. Being offered help yourself feels threatening or confusing.",
+    gift: "The need for connection is the most human thing there is. Reclaimed, it becomes the capacity for true intimacy — the ability to receive as well as give, to be held as well as hold."
+  },
+];
+
+const container = document.getElementById('archetypes');
+ARCHETYPES.forEach((a, i) => {
+  const card = document.createElement('div');
+  card.className = 'arch-card';
+  card.innerHTML = `
+    <div class="arch-header">
+      <span class="arch-glyph">${a.glyph}</span>
+      <div class="arch-info">
+        <span class="arch-name">${a.name}</span>
+        <span class="arch-tag">${a.tag}</span>
+      </div>
+      <span class="arch-toggle">▾</span>
+    </div>
+    <div class="arch-body">
+      <p>${a.desc}</p>
+      <p><strong>In the body:</strong> <em>${a.body}</em></p>
+      <p><strong>The trigger:</strong> <em>${a.trigger}</em></p>
+      <div class="arch-gift">${a.gift}</div>
+    </div>
+  `;
+  card.addEventListener('click', () => card.classList.toggle('open'));
+  container.appendChild(card);
+});
+</script>
+</body>
+</html>
