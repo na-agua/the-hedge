@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Crossing · The Hedge</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cinzel:wght@400;500&display=swap');
+
+:root {
+  --night: #09080f;
+  --gold: #b8923a;
+  --gold2: #d4ae6a;
+  --parch: #e8e0d0;
+  --muted: #7a7060;
+  --soft: #a89880;
+  --teal: #4a8a98;
+  --teal2: #7ab8c8;
+  --border: rgba(184,146,58,0.12);
+  --border-teal: rgba(74,138,152,0.2);
+  --surface: rgba(255,255,255,0.02);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--night);
+  color: var(--parch);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px; line-height: 1.8; overflow-x: hidden;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(40,80,100,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(40,60,90,0.06) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+.stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 7% 13%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 36%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 39% 7%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 56% 28%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 57%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 86% 16%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 94% 68%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 11% 78%, rgba(255,255,255,0.27) 0%, transparent 100%),
+    radial-gradient(1px 1px at 44% 88%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 78% 93%, rgba(255,255,255,0.27) 0%, transparent 100%);
+}
+.wrap {
+  position: relative; z-index: 1;
+  max-width: 680px; margin: 0 auto; padding: 0 28px 120px;
+}
+.back {
+  display: inline-block; padding: 20px 0 0;
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.3em; color: var(--muted);
+  text-decoration: none; text-transform: uppercase; transition: color 0.2s;
+}
+.back:hover { color: var(--teal2); }
+header { text-align: center; padding: 48px 0 52px; }
+.header-glyph {
+  font-size: 56px; display: block; margin-bottom: 16px;
+  animation: breathe 10s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.03); }
+}
+.page-tag {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.45em; color: var(--teal2);
+  text-transform: uppercase; opacity: 0.7; display: block; margin-bottom: 10px;
+}
+h1 {
+  font-family: 'Cinzel', serif; font-size: clamp(24px, 5vw, 36px);
+  font-weight: 400; color: var(--teal2); letter-spacing: 0.1em;
+  text-shadow: 0 0 40px rgba(74,138,152,0.2); margin-bottom: 6px;
+}
+.header-sub { font-style: italic; font-size: 16px; color: var(--muted); opacity: 0.8; }
+.divider {
+  display: flex; align-items: center; gap: 16px; margin: 44px 0 36px; opacity: 0.35;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--teal), transparent);
+}
+.divider span { color: var(--teal); font-size: 14px; }
+.opening { text-align: center; margin-bottom: 48px; }
+.opening p { font-style: italic; font-size: 17px; color: var(--soft); line-height: 1.9; max-width: 500px; margin: 0 auto 14px; }
+.opening em { color: var(--teal2); font-style: normal; }
+.opening strong { color: var(--parch); font-weight: 500; }
+.sec-tag {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em;
+  color: var(--teal2); text-transform: uppercase; display: block; margin-bottom: 6px; opacity: 0.7;
+}
+.sec-title { font-style: italic; font-size: 24px; color: var(--parch); margin-bottom: 20px; font-weight: 400; }
+
+/* STEPS */
+.steps { margin: 24px 0; }
+.step { display: grid; grid-template-columns: 44px 1fr; gap: 0; margin-bottom: 3px; }
+.step-num {
+  background: rgba(74,138,152,0.08); border: 1px solid var(--border-teal); border-right: none;
+  display: flex; align-items: flex-start; justify-content: center; padding-top: 22px;
+  font-family: 'Cinzel', serif; font-size: 11px; color: var(--teal2); opacity: 0.7;
+}
+.step-body { background: var(--surface); border: 1px solid var(--border-teal); padding: 20px 22px; }
+.step-body h4 { font-style: italic; font-size: 17px; color: var(--teal2); margin-bottom: 8px; font-weight: 400; }
+.step-body p { font-size: 15.5px; color: var(--soft); line-height: 1.75; }
+.step-body em { color: var(--gold2); }
+.step-body strong { color: var(--parch); font-weight: 500; }
+
+/* WARNING */
+.warning {
+  background: rgba(74,138,152,0.05); border: 1px solid var(--border-teal);
+  padding: 24px; margin: 28px 0; position: relative;
+}
+.warning::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--teal), transparent); opacity: 0.5;
+}
+.warning h4 { font-style: italic; font-size: 18px; color: var(--teal2); margin-bottom: 12px; font-weight: 400; }
+.warning p { font-size: 15.5px; color: var(--soft); line-height: 1.75; margin-bottom: 10px; }
+.warning p:last-child { margin-bottom: 0; }
+.warning em { color: var(--gold2); }
+.warning strong { color: var(--parch); font-weight: 500; }
+
+/* PLANT ALLIES */
+.plants { display: grid; gap: 3px; margin: 24px 0; }
+.plant-card {
+  background: var(--surface); border: 1px solid var(--border-teal);
+  padding: 20px 22px; cursor: pointer; transition: background 0.25s;
+}
+.plant-card:hover, .plant-card.open { background: rgba(74,138,152,0.04); }
+.plant-header { display: flex; align-items: center; gap: 14px; }
+.plant-glyph { font-size: 22px; flex-shrink: 0; }
+.plant-info { flex: 1; }
+.plant-name { font-style: italic; font-size: 17px; color: var(--parch); display: block; margin-bottom: 2px; }
+.plant-tag { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal2); opacity: 0.7; }
+.plant-toggle { color: var(--teal2); opacity: 0.4; font-size: 16px; transition: transform 0.3s, opacity 0.3s; flex-shrink: 0; }
+.plant-card.open .plant-toggle { transform: rotate(180deg); opacity: 0.8; }
+.plant-body { display: none; padding-top: 14px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
+.plant-card.open .plant-body { display: block; }
+.plant-body p { font-size: 15px; color: var(--soft); line-height: 1.7; margin-bottom: 10px; }
+.plant-body p:last-child { margin-bottom: 0; }
+.plant-body em { color: var(--gold2); }
+
+/* PROTECTION */
+.protection {
+  background: rgba(0,0,0,0.3); border: 1px solid var(--border-teal);
+  padding: 28px; margin: 28px 0; position: relative;
+}
+.protection::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--teal), transparent); opacity: 0.4;
+}
+.protection h4 { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--teal2); margin-bottom: 16px; opacity: 0.8; }
+.protection-item { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+.protection-glyph { color: var(--teal2); flex-shrink: 0; font-size: 16px; padding-top: 2px; }
+.protection-text { font-size: 15.5px; color: var(--soft); line-height: 1.65; }
+.protection-text strong { color: var(--parch); font-weight: 500; }
+
+/* CLOSING */
+.page-footer { text-align: center; padding: 40px 0 0; border-top: 1px solid var(--border); }
+.page-footer p { font-size: 13px; color: var(--muted); font-style: italic; }
+.page-footer a { color: var(--teal2); text-decoration: none; opacity: 0.7; }
+.page-footer a:hover { opacity: 1; }
+
+@media (max-width: 480px) {
+  .wrap { padding: 0 20px 80px; }
+  .step { grid-template-columns: 36px 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrap">
+
+  <a class="back" href="index.html">← The Hedge</a>
+
+  <header>
+    <span class="header-glyph">🌿</span>
+    <span class="page-tag">The Hedge · Grimoire</span>
+    <h1>The Crossing</h1>
+    <div class="header-sub">hedge riding · the otherworld · spirit work</div>
+  </header>
+
+  <div class="divider"><span>·</span></div>
+
+  <div class="opening">
+    <p>The hedge is not decoration.</p>
+    <p>It is the boundary between the world you can touch<br>and the world that touches you back.</p>
+    <p><em>To cross it is not imagination.</em><br>
+    <strong>It is the oldest practice there is.</strong></p>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- WHAT IT IS -->
+  <div class="warning">
+    <h4>What hedge riding actually is</h4>
+    <p>Hedge riding is the deliberate practice of entering an altered state of consciousness to journey into the Otherworld — the spirit realm beyond ordinary perception. It is not visualization, guided meditation, or imagination, though it begins there. It is a real crossing.</p>
+    <p>The hedge witch is the original <em>walker between worlds</em> — a figure who lives in ordinary life and can also move in the spirit realm. Not permanently in either. <strong>Belonging to both and to neither.</strong></p>
+    <p>This practice sits at the center of hedge witchcraft. Everything else — herbs, moon work, shadow work — prepares you for this. Or it supports you after.</p>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- BEFORE YOU GO -->
+  <span class="sec-tag">Before you cross</span>
+  <h2 class="sec-title">Prerequisites</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">I</div>
+      <div class="step-body">
+        <h4>Learn to be still</h4>
+        <p>Before you can cross the hedge, you need to be able to sit in stillness for at least 20 minutes without significant distraction. This is not meditation mastery — it is the minimum threshold. <em>The Otherworld does not open for a restless mind.</em></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">II</div>
+      <div class="step-body">
+        <h4>Know a banishing practice</h4>
+        <p>The LBRP (from Kraig's Lesson 2) is ideal. Or any practiced, embodied protection ritual that you know in your body, not just your head. <strong>Do this before every single crossing.</strong> Not because the Otherworld is inherently dangerous, but because intention and protection determine what you encounter there.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">III</div>
+      <div class="step-body">
+        <h4>Set a clear intention</h4>
+        <p>Know why you are crossing before you cross. <em>What are you seeking?</em> Healing, knowledge, communication with an ancestor, understanding a dream? Curiosity alone is not enough. The Otherworld responds to purpose.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">IV</div>
+      <div class="step-body">
+        <h4>Establish your return anchor</h4>
+        <p>A physical object in your hand — a stone, a root, a piece of wood. <strong>This is what you hold onto.</strong> If the journey becomes disorienting, squeeze it. It is your tether to your body and this world. Never cross without it.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">V</div>
+      <div class="step-body">
+        <h4>Do not ride when depleted</h4>
+        <p>Not during mental health crisis, extreme emotional distress, illness, or after alcohol. The Otherworld requires that you be present and grounded enough to return. <em>If you are not sure whether you are stable enough — you are not stable enough.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- THE CROSSING -->
+  <span class="sec-tag">The crossing itself</span>
+  <h2 class="sec-title">How to Ride</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Protect the space</h4>
+        <p>Do the LBRP or your practiced banishing. State clearly: <em>"Only my guides and allies may come through. Nothing harmful may approach."</em> Say it aloud. Your voice in the physical world carries authority in the spirit world.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Enter trance</h4>
+        <p>Drumming at 4 beats per second (use a recording), repetitive breath, or deep stillness. Some hedge witches use mugwort tea or incense. Let ordinary mind soften — not disappear, soften. You are not losing consciousness. You are <strong>shifting it.</strong></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Find your threshold</h4>
+        <p>Visualize a specific boundary — a hedge, a forest edge, a cave mouth, a river, a doorway in fog. This is your crossing point. Know it completely. Return to the same threshold each time you ride — <em>consistency builds the path.</em></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Cross</h4>
+        <p>Part the branches. Step through. <strong>Do not force what you see — receive it.</strong> The Otherworld will show you what is there. Your job is to be present and observant, not to control the experience.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h4>Work with what comes</h4>
+        <p>An animal, an ancestor, a figure, a landscape, a feeling. Ask your intention question. <em>Listen without immediately interpreting.</em> What you encounter may not make sense until after you return.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <h4>Return deliberately</h4>
+        <p>When complete — or when you feel it is time — retrace your steps to your threshold. <strong>Step back through deliberately.</strong> Close it behind you. Thank any guides or allies who were present. Say your own name aloud when you return.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <h4>Ground completely</h4>
+        <p>Eat something. Touch the earth. Press your feet flat on the floor. <strong>Write everything immediately</strong> — what you saw, felt, heard, sensed. It fades like dreams within minutes. The journal is the harvest.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- PLANT ALLIES -->
+  <span class="sec-tag">The plant world</span>
+  <h2 class="sec-title">Plant Allies of the Hedge</h2>
+  <p style="font-size:16px; color:var(--muted); font-style:italic; margin-bottom:20px;">These plants have worked with hedge witches for centuries. Tap each to learn them.</p>
+
+  <div class="plants" id="plants"></div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- PROTECTION -->
+  <div class="protection">
+    <h4>Protection when riding</h4>
+    <div class="protection-item">
+      <span class="protection-glyph">✦</span>
+      <div class="protection-text"><strong>Always do a banishing first.</strong> Every time, without exception. The LBRP takes 10 minutes and it matters.</div>
+    </div>
+    <div class="protection-item">
+      <span class="protection-glyph">✦</span>
+      <div class="protection-text"><strong>Hold your anchor object.</strong> A stone, root, or wood in your hand. This is your tether to the physical world.</div>
+    </div>
+    <div class="protection-item">
+      <span class="protection-glyph">✦</span>
+      <div class="protection-text"><strong>Set a time limit.</strong> 20-30 minutes for a working ride. Use a gentle alarm. Open-ended journeys become disorienting.</div>
+    </div>
+    <div class="protection-item">
+      <span class="protection-glyph">✦</span>
+      <div class="protection-text"><strong>Not everything that appears is what it seems.</strong> Test the spirits. Ask them to state their name and intention. Genuine guides do not resist this.</div>
+    </div>
+    <div class="protection-item">
+      <span class="protection-glyph">✦</span>
+      <div class="protection-text"><strong>If something feels wrong, leave.</strong> You can always leave. Say "I return to my body now" — say your own name — squeeze your anchor. You are always able to come back.</div>
+    </div>
+  </div>
+
+  <div class="divider"><span>☽</span></div>
+
+  <div style="text-align:center; padding: 20px 0 40px;">
+    <p style="font-style:italic; font-size:17px; color:var(--muted); max-width:440px; margin:0 auto; line-height:1.9;">
+      "To cross the hedge is to accept transformation<br>from the mundane into the magic.<br>
+      To honor the threshold is to remember<br>belonging to the spirit of the land."
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <p>☽ ✦ ☾</p>
+    <p style="margin-top: 8px;"><a href="index.html">← Return to The Hedge</a></p>
+  </div>
+
+</div>
+
+<script>
+const PLANTS = [
+  {
+    glyph: "🌿", name: "Mugwort",
+    tag: "Artemisia vulgaris · The dreamer's ally",
+    use: "Burn before riding, make tea, or keep under your pillow. Mugwort opens the inner hedge — she loosens the boundary between ordinary and non-ordinary consciousness without force.",
+    lore: "Sacred to Artemis, goddess of the wild and the moon. Used by hedge witches across Europe for centuries. She is the most direct plant ally for crossing work and dream journeying.",
+    caution: "Avoid during pregnancy. Do not use excessively — she is powerful and respects those who approach her with intention."
+  },
+  {
+    glyph: "🌸", name: "Hawthorn",
+    tag: "Crataegus · Guardian of the threshold",
+    use: "Make an offering of hawthorn berries or flowers at your threshold before crossing. She marks crossing points and guards gateways. Sacred to the Fae — she opens passage between worlds.",
+    lore: "In Celtic tradition, hawthorn trees that grow alone in a field are Fae trees — thresholds in themselves. Never cut a lone hawthorn. The hedge witch who works with hawthorn is working with very old magic.",
+    caution: "Ask permission before taking any part of a hawthorn. Particularly sacred and must be approached with respect."
+  },
+  {
+    glyph: "🖤", name: "Blackthorn",
+    tag: "Prunus spinosa · The dark initiator",
+    use: "Work with blackthorn for protection in difficult crossings, shadow work done in the Otherworld, and Samhain-season riding. She governs the crossing that changes you.",
+    lore: "The Crone's plant. Blackthorn blooms before its leaves appear — beauty before greenness, flowering in the cold. She teaches that transformation comes before comfort. She is associated with initiation, the ancestors, and bone-deep truth.",
+    caution: "Do not work with blackthorn casually. She is not gentle magic. She is initiatory magic."
+  },
+  {
+    glyph: "🌼", name: "Yarrow",
+    tag: "Achillea millefolium · The walker's companion",
+    use: "Carry yarrow when crossing. Burn it to clear space and strengthen psychic boundaries. Grow it where paths cross — she is liminal by nature, a boundary plant.",
+    lore: "Yarrow grows wild wherever paths meet — roadsides, field edges, the borders between places. She strengthens the aura and clarifies psychic sight. She was carried into battle for protection and into the spirit realm for the same reason.",
+    caution: "Generally safe. Some people have allergic reactions — test before burning extensively."
+  },
+  {
+    glyph: "🌳", name: "Elder",
+    tag: "Sambucus nigra · The Elder Mother",
+    use: "The Elder Mother guards the gateway between worlds. Work with elder for ancestral connection, spirit communication, and Samhain workings. Always ask permission before using any part of the elder tree.",
+    lore: "In Northern European tradition, the Elder Mother (Hyldemor in Danish) lives in the elder tree. She must be asked permission before taking anything. She governs the passage of the dead and the connection between living and ancestral realms.",
+    caution: "Always speak aloud to the Elder Mother before taking branches, berries, or flowers. Raw elder is toxic — never ingest without proper preparation."
+  },
+];
+
+const container = document.getElementById('plants');
+PLANTS.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'plant-card';
+  card.innerHTML = `
+    <div class="plant-header">
+      <span class="plant-glyph">${p.glyph}</span>
+      <div class="plant-info">
+        <span class="plant-name">${p.name}</span>
+        <span class="plant-tag">${p.tag}</span>
+      </div>
+      <span class="plant-toggle">▾</span>
+    </div>
+    <div class="plant-body">
+      <p><em>How to work with her:</em> ${p.use}</p>
+      <p><em>Lore:</em> ${p.lore}</p>
+      <p><em>Caution:</em> ${p.caution}</p>
+    </div>
+  `;
+  card.addEventListener('click', () => card.classList.toggle('open'));
+  container.appendChild(card);
+});
+</script>
+</body>
+</html>
