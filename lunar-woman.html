@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lunar Woman · The Hedge</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cinzel:wght@400;500&display=swap');
+
+:root {
+  --night: #09080f;
+  --gold: #b8923a;
+  --gold2: #d4ae6a;
+  --parch: #e8e0d0;
+  --muted: #7a7060;
+  --soft: #a89880;
+  --lav: #8878b8;
+  --lav2: #c8b8e8;
+  --border: rgba(184,146,58,0.12);
+  --border-lav: rgba(136,120,184,0.2);
+  --surface: rgba(255,255,255,0.02);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--night);
+  color: var(--parch);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px; line-height: 1.8; overflow-x: hidden;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 25%, rgba(80,60,120,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 75%, rgba(184,146,58,0.04) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+.stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 6% 12%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 19% 36%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 38% 7%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 27%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 71% 57%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 16%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 93% 67%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 12% 78%, rgba(255,255,255,0.27) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 88%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 77% 92%, rgba(255,255,255,0.27) 0%, transparent 100%);
+}
+.wrap { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 0 28px 120px; }
+.back {
+  display: inline-block; padding: 20px 0 0;
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.3em; color: var(--muted);
+  text-decoration: none; text-transform: uppercase; transition: color 0.2s;
+}
+.back:hover { color: var(--lav2); }
+header { text-align: center; padding: 48px 0 52px; }
+.header-glyph {
+  font-size: 56px; display: block; margin-bottom: 16px;
+  animation: breathe 12s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50% { opacity: 0.95; transform: scale(1.03); }
+}
+.page-tag {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.45em; color: var(--lav2);
+  text-transform: uppercase; opacity: 0.7; display: block; margin-bottom: 10px;
+}
+h1 {
+  font-family: 'Cinzel', serif; font-size: clamp(22px, 5vw, 34px);
+  font-weight: 400; color: var(--lav2); letter-spacing: 0.1em;
+  text-shadow: 0 0 40px rgba(136,120,184,0.2); margin-bottom: 6px;
+}
+.header-sub { font-style: italic; font-size: 16px; color: var(--muted); opacity: 0.8; }
+.divider {
+  display: flex; align-items: center; gap: 16px; margin: 44px 0 36px; opacity: 0.35;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--lav), transparent);
+}
+.divider span { color: var(--lav); font-size: 14px; }
+.opening { text-align: center; margin-bottom: 48px; }
+.opening p { font-style: italic; font-size: 17px; color: var(--soft); line-height: 1.9; max-width: 500px; margin: 0 auto 14px; }
+.opening em { color: var(--lav2); font-style: normal; }
+.opening strong { color: var(--parch); font-weight: 500; }
+.sec-tag {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em;
+  color: var(--lav2); text-transform: uppercase; display: block; margin-bottom: 6px; opacity: 0.7;
+}
+.sec-title { font-style: italic; font-size: 24px; color: var(--parch); margin-bottom: 20px; font-weight: 400; }
+
+/* TODAY WIDGET */
+.today-widget {
+  background: var(--surface); border: 1px solid var(--border-lav);
+  padding: 28px 24px; margin-bottom: 4px; text-align: center; position: relative;
+}
+.today-widget::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--lav2), transparent); opacity: 0.5;
+}
+.today-label {
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.45em;
+  color: var(--lav2); text-transform: uppercase; opacity: 0.6; display: block; margin-bottom: 16px;
+}
+.today-glyph { font-size: 52px; display: block; margin-bottom: 12px; animation: breathe 7s ease-in-out infinite; }
+.today-phase-name { font-style: italic; font-size: 22px; color: var(--parch); display: block; margin-bottom: 4px; }
+.today-season {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.2em;
+  color: var(--lav2); text-transform: uppercase; display: block; margin-bottom: 16px; opacity: 0.7;
+}
+.today-desc { font-size: 15.5px; color: var(--soft); font-style: italic; line-height: 1.75; max-width: 460px; margin: 0 auto 16px; }
+.today-journal {
+  font-size: 14px; color: var(--muted); font-style: italic;
+  padding: 12px 16px; background: rgba(0,0,0,0.2);
+  border-left: 2px solid var(--lav); max-width: 420px; margin: 0 auto; text-align: left;
+}
+.today-journal::before {
+  content: 'Ask yourself — ';
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--lav2); opacity: 0.8; font-style: normal;
+}
+.today-moon { font-size: 13px; color: var(--muted); font-style: italic; display: block; margin-top: 16px; }
+
+/* PHASE INPUT */
+.phase-input {
+  background: rgba(136,120,184,0.05); border: 1px solid var(--border-lav);
+  padding: 20px 22px; margin-top: 3px;
+}
+.phase-input p { font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 12px; }
+.phase-select {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.phase-btn {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; padding: 8px 14px;
+  background: none; border: 1px solid var(--border-lav);
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+.phase-btn:hover, .phase-btn.active {
+  border-color: var(--lav2); color: var(--lav2);
+  background: rgba(136,120,184,0.08);
+}
+
+/* SEASON CARDS */
+.seasons { display: grid; gap: 3px; margin: 24px 0; }
+.season-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--season-color, var(--lav));
+  padding: 22px 24px; cursor: pointer; transition: background 0.25s;
+}
+.season-card:hover, .season-card.open { background: rgba(136,120,184,0.04); }
+.season-header { display: flex; align-items: center; gap: 14px; }
+.season-glyph { font-size: 26px; flex-shrink: 0; }
+.season-info { flex: 1; }
+.season-name { font-style: italic; font-size: 18px; color: var(--parch); display: block; margin-bottom: 2px; }
+.season-tag { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--season-color, var(--lav)); opacity: 0.7; }
+.season-toggle { color: var(--season-color, var(--lav)); opacity: 0.4; font-size: 16px; transition: transform 0.3s, opacity 0.3s; flex-shrink: 0; }
+.season-card.open .season-toggle { transform: rotate(180deg); opacity: 0.8; }
+.season-body { display: none; padding-top: 16px; margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.05); }
+.season-card.open .season-body { display: block; }
+.season-body p { font-size: 15.5px; color: var(--soft); line-height: 1.75; margin-bottom: 12px; }
+.season-body p:last-child { margin-bottom: 0; }
+.season-body em { color: var(--gold2); }
+.season-body strong { color: var(--parch); font-weight: 500; }
+.season-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+.season-item-label {
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--season-color, var(--lav)); opacity: 0.7;
+  display: block; margin-bottom: 4px;
+}
+.season-item-val { font-size: 14px; color: var(--muted); font-style: italic; line-height: 1.55; }
+.season-journal {
+  margin-top: 14px; padding: 12px 16px;
+  background: rgba(0,0,0,0.2);
+  border-left: 2px solid var(--season-color, var(--lav));
+  font-size: 14px; color: var(--muted); font-style: italic; line-height: 1.65;
+}
+.season-journal::before {
+  content: 'Journal prompt — ';
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--season-color, var(--lav)); opacity: 0.7; font-style: normal;
+}
+
+/* MOON TYPES */
+.moon-types { display: grid; gap: 3px; margin: 24px 0; }
+.moon-type {
+  background: var(--surface); border: 1px solid var(--border-lav);
+  padding: 20px 22px;
+}
+.moon-type h4 { font-style: italic; font-size: 17px; color: var(--parch); margin-bottom: 8px; font-weight: 400; }
+.moon-type p { font-size: 15px; color: var(--soft); line-height: 1.7; }
+.moon-type em { color: var(--gold2); }
+
+/* NOTE */
+.note {
+  background: rgba(0,0,0,0.2); border: 1px solid var(--border-lav);
+  padding: 20px 22px; margin: 24px 0;
+}
+.note p { font-size: 15px; color: var(--muted); font-style: italic; line-height: 1.75; }
+.note strong { color: var(--parch); font-weight: 500; }
+
+/* FOOTER */
+.page-footer { text-align: center; padding: 40px 0 0; border-top: 1px solid var(--border); }
+.page-footer p { font-size: 13px; color: var(--muted); font-style: italic; }
+.page-footer a { color: var(--lav2); text-decoration: none; opacity: 0.7; }
+.page-footer a:hover { opacity: 1; }
+
+@media (max-width: 480px) {
+  .wrap { padding: 0 20px 80px; }
+  .season-grid { grid-template-columns: 1fr; }
+  .phase-select { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrap">
+
+  <a class="back" href="index.html">← The Hedge</a>
+
+  <header>
+    <span class="header-glyph">🌙</span>
+    <span class="page-tag">The Hedge · Grimoire</span>
+    <h1>Lunar Woman</h1>
+    <div class="header-sub">menstrual cycle · inner seasons · the body as teacher</div>
+  </header>
+
+  <div class="divider"><span>·</span></div>
+
+  <div class="opening">
+    <p>Your body already knows the moon.</p>
+    <p>The same rhythm that moves the tides<br>
+    moves through you every 28 days —<br>
+    <em>four seasons in a single month,</em><br>
+    four faces of the Goddess in a single woman.</p>
+    <p><strong>You are not broken when you change.<br>
+    You are cycling.</strong></p>
+  </div>
+
+  <!-- TODAY -->
+  <div class="today-widget">
+    <span class="today-label">Where you are now</span>
+    <span class="today-glyph" id="todayGlyph">🌙</span>
+    <span class="today-phase-name" id="todayPhaseName">Select your phase below</span>
+    <span class="today-season" id="todaySeason">—</span>
+    <p class="today-desc" id="todayDesc">Tell me where you are in your cycle and I'll show you what this phase holds.</p>
+    <div class="today-journal" id="todayJournal" style="display:none;"></div>
+    <span class="today-moon" id="todayMoon"></span>
+  </div>
+
+  <div class="phase-input">
+    <p>Where are you in your cycle right now?</p>
+    <div class="phase-select">
+      <button class="phase-btn" onclick="setPhase(0)">🌑 Menstruation</button>
+      <button class="phase-btn" onclick="setPhase(1)">🌒 Follicular</button>
+      <button class="phase-btn" onclick="setPhase(2)">🌕 Ovulation</button>
+      <button class="phase-btn" onclick="setPhase(3)">🌘 Luteal</button>
+    </div>
+  </div>
+
+  <div class="divider"><span>✦</span></div>
+
+  <!-- FOUR SEASONS -->
+  <span class="sec-tag">The inner cycle</span>
+  <h2 class="sec-title">Four Inner Seasons</h2>
+
+  <div class="seasons" id="seasons"></div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- MOON CYCLE TYPES -->
+  <span class="sec-tag">When you bleed relative to the moon</span>
+  <h2 class="sec-title">Moon Cycle Types</h2>
+  <p style="font-size:16px; color:var(--muted); font-style:italic; margin-bottom:20px;">These patterns shift throughout life. None is better than another.</p>
+
+  <div class="moon-types">
+    <div class="moon-type">
+      <h4>🌑 White Moon Cycle</h4>
+      <p>You bleed with the new moon and ovulate at the full moon. Traditionally associated with nurturing, receptivity, and fertility — biological or creative. <em>Your inward time aligns with the moon's inward time.</em> Deep rest at the dark of the moon, full creative power when the moon is full.</p>
+    </div>
+    <div class="moon-type">
+      <h4>🌕 Red Moon Cycle</h4>
+      <p>You bleed with the full moon and ovulate at the new moon. Historically associated with healers, wisdom-keepers, and those whose power flows outward toward others rather than toward biological creation. <em>When the world is most awake, you turn most inward.</em> A paradox that produces deep magic.</p>
+    </div>
+    <div class="moon-type">
+      <h4>🌒 Pink Moon Cycle</h4>
+      <p>You bleed at the waxing moon. A transitional cycle — you are in a period of movement, <em>from inward spiritual focus toward outward creative expression</em> or vice versa. A time of building and becoming.</p>
+    </div>
+    <div class="moon-type">
+      <h4>🌘 Purple Moon Cycle</h4>
+      <p>You bleed at the waning moon. Your most inward time aligns with the moon's releasing energy. <em>Deep clearing, introspection, and spiritual preparation.</em> The cycle of the witch who does her most profound work in the dark.</p>
+    </div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- NOTE -->
+  <div class="note">
+    <p><strong>If you don't menstruate:</strong> You can still work with this framework. Use the lunar cycle itself as your guide — new moon as day 1 (menstruation phase), waxing crescent and first quarter as follicular, full moon as ovulation, waning as luteal. The archetypal seasons apply regardless.</p>
+    <p style="margin-top:10px;"><strong>If your cycle is irregular:</strong> Track how you actually feel day by day and notice the pattern over months. The inner seasons are real even when the calendar is unpredictable.</p>
+  </div>
+
+  <div class="divider"><span>☽</span></div>
+
+  <div style="text-align:center; padding: 20px 0 40px;">
+    <p style="font-style:italic; font-size:17px; color:var(--muted); max-width:440px; margin:0 auto; line-height:1.9;">
+      "You are not meant to be the same every day.<br>
+      You are a cyclical, radiant being,<br>
+      dancing with the moon<br>
+      and blooming with the seasons."
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <p>☽ ✦ ☾</p>
+    <p style="margin-top: 8px;"><a href="index.html">← Return to The Hedge</a></p>
+  </div>
+
+</div>
+
+<script>
+const SEASONS = [
+  {
+    glyph: "🌑", name: "Menstruation", phase: "Inner Winter · Days 1–5",
+    archetype: "The Crone · The Witch · The Wise Woman",
+    color: "#9878d8",
+    desc: "Bleeding time. Energy is at its lowest and most inward. This is not weakness — it is the most psychically open, intuitively alive phase of your entire cycle. The veil between you and your own unconscious is at its thinnest. Rest is not what you do when you can't do anything else. It is the work.",
+    body: "Warmth, quiet, iron-rich food, no forcing. Honor the need to withdraw.",
+    magick: "Shadow work, deep dreaming, divination, releasing, ancestral connection",
+    herbs: "Cacao, red raspberry leaf, nettles for iron, mugwort for dreaming",
+    journal: "What is complete? What am I being asked to release this cycle?"
+  },
+  {
+    glyph: "🌒", name: "Follicular", phase: "Inner Spring · Days 6–13",
+    archetype: "The Maiden · New Beginnings · The Rising",
+    color: "#6ab89a",
+    desc: "Energy rises. Ideas spark. Focus returns like light returning after the dark moon. This is your most creative phase — the best time to begin new things, learn something difficult, plan what hasn't been planned. The body is literally preparing to create. Say yes to what genuinely excites you.",
+    body: "Movement, fresh food, social connection, new projects. Energy is available — use it wisely.",
+    magick: "Intention setting, learning, beginning rituals, new projects, any magic that requires focus",
+    herbs: "Green tea, matcha, fresh herbs, spring flowers, basil",
+    journal: "What wants to be born? What am I genuinely excited to grow this cycle?"
+  },
+  {
+    glyph: "🌕", name: "Ovulation", phase: "Inner Summer · Days 14–19",
+    archetype: "The Mother · The Lover · Full Power",
+    color: "#c9a84c",
+    desc: "Peak energy. You are magnetic, outward, generous. Articulate. The body radiates. This is the best time for any ritual that involves others, any magic that moves outward — love spells, abundance work, spells of visibility and influence. The body at its fullest and most powerful outward expression.",
+    body: "Physical activity, celebration, connection with others, pleasure. Peak is available — receive it.",
+    magick: "Love magic, abundance, community work, outward expression, any magic requiring presence and power",
+    herbs: "Rose, jasmine, saffron, cardamom, anything sensual and blooming",
+    journal: "Where am I most alive right now? What am I ready to offer the world?"
+  },
+  {
+    glyph: "🌘", name: "Luteal", phase: "Inner Autumn · Days 20–28",
+    archetype: "The Enchantress · The Truth-Teller · The Boundary",
+    color: "#d4869a",
+    desc: "Energy withdraws inward. The Enchantress rises. What was tolerable all month becomes undeniable. What you've been suppressing surfaces. These strong feelings are not dysfunction — they are your most honest self, the part of you that has been watching all month and can no longer stay quiet. She does not lie.",
+    body: "Warmth, less stimulation, rest before it's needed, spiced chai, gentle movement. Listen to what the body requests.",
+    magick: "Shadow work, boundaries, discernment, protection, releasing, truth-telling rituals",
+    herbs: "Chai spices, cinnamon, ginger for circulation, chamomile for nervous system, evening primrose",
+    journal: "What is my body trying to tell me that I have been ignoring? What have I been tolerating?"
+  }
+];
+
+// ── MOON CALC ──────────────────────────────────────────────
+function getMoonAge(date) {
+  const knownNewMoon = new Date(Date.UTC(2000, 0, 6, 18, 14, 0));
+  const synodicMonth = 29.53059;
+  const diff = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
+  const cycles = diff / synodicMonth;
+  return (cycles - Math.floor(cycles)) * synodicMonth;
+}
+function getMoonGlyph(age) {
+  if (age < 1.85) return "🌑 New Moon";
+  if (age < 7.38) return "🌒 Waxing Crescent";
+  if (age < 9.22) return "🌓 First Quarter";
+  if (age < 14.77) return "🌔 Waxing Gibbous";
+  if (age < 16.61) return "🌕 Full Moon";
+  if (age < 22.15) return "🌖 Waning Gibbous";
+  if (age < 23.99) return "🌗 Last Quarter";
+  return "🌘 Waning Crescent";
+}
+
+// Show moon in widget
+const moonAge = getMoonAge(new Date());
+document.getElementById('todayMoon').textContent = "Tonight's moon: " + getMoonGlyph(moonAge);
+
+// ── SET PHASE ──────────────────────────────────────────────
+function setPhase(idx) {
+  const s = SEASONS[idx];
+  document.getElementById('todayGlyph').textContent = s.glyph;
+  document.getElementById('todayPhaseName').textContent = s.name;
+  document.getElementById('todaySeason').textContent = s.phase + '  ·  ' + s.archetype;
+  document.getElementById('todayDesc').textContent = s.desc.split('.')[0] + '. ' + s.desc.split('.')[1] + '.';
+  const j = document.getElementById('todayJournal');
+  j.style.display = 'block';
+  j.textContent = s.journal;
+  document.querySelectorAll('.phase-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === idx);
+  });
+}
+
+// ── RENDER SEASONS ─────────────────────────────────────────
+const container = document.getElementById('seasons');
+SEASONS.forEach((s, i) => {
+  const card = document.createElement('div');
+  card.className = 'season-card';
+  card.style.setProperty('--season-color', s.color);
+  card.innerHTML = `
+    <div class="season-header">
+      <span class="season-glyph">${s.glyph}</span>
+      <div class="season-info">
+        <span class="season-name">${s.name}</span>
+        <span class="season-tag">${s.phase}  ·  ${s.archetype}</span>
+      </div>
+      <span class="season-toggle">▾</span>
+    </div>
+    <div class="season-body">
+      <p>${s.desc}</p>
+      <div class="season-grid">
+        <div>
+          <span class="season-item-label">Body needs</span>
+          <span class="season-item-val">${s.body}</span>
+        </div>
+        <div>
+          <span class="season-item-label">Magick</span>
+          <span class="season-item-val">${s.magick}</span>
+        </div>
+        <div>
+          <span class="season-item-label">Herbs & allies</span>
+          <span class="season-item-val">${s.herbs}</span>
+        </div>
+      </div>
+      <div class="season-journal">${s.journal}</div>
+    </div>
+  `;
+  card.addEventListener('click', () => card.classList.toggle('open'));
+  container.appendChild(card);
+});
+</script>
+</body>
+</html>
