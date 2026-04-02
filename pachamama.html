@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pachamama · The Hedge</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cinzel:wght@400;500&display=swap');
+
+:root {
+  --night: #06040f;
+  --violet: #7a58c8;
+  --violet2: #b8a0e8;
+  --violet3: #e8e0ff;
+  --violet-dim: rgba(122,88,200,0.15);
+  --gold: #b8923a;
+  --gold2: #d4ae6a;
+  --parch: #e8e0d0;
+  --muted: #6a6070;
+  --soft: #9890a0;
+  --border: rgba(122,88,200,0.15);
+  --surface: rgba(122,88,200,0.04);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--night);
+  color: var(--parch);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.9;
+  overflow-x: hidden;
+}
+
+/* Deep space background */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(122,88,200,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 80%, rgba(60,40,100,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(40,30,80,0.05) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+
+/* Stars — more of them, slightly violet-tinted */
+.stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 4% 8%, rgba(200,180,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 11% 22%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 18% 5%, rgba(200,180,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 27% 38%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 15%, rgba(200,180,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 43% 52%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 52% 8%, rgba(200,180,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 61% 33%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 69% 18%, rgba(200,180,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 77% 45%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 84% 12%, rgba(200,180,255,0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 91% 28%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 96% 55%, rgba(200,180,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 7% 65%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 78%, rgba(200,180,255,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 24% 88%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 33% 72%, rgba(200,180,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 48% 82%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 58% 68%, rgba(200,180,255,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 72% 85%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 82% 72%, rgba(200,180,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 90%, rgba(255,255,255,0.3) 0%, transparent 100%);
+}
+
+.wrap {
+  position: relative; z-index: 1;
+  max-width: 640px; margin: 0 auto;
+  padding: 0 28px 120px;
+}
+
+.back {
+  display: inline-block; padding: 20px 0 0;
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.3em; color: var(--muted);
+  text-decoration: none; text-transform: uppercase; transition: color 0.2s;
+}
+.back:hover { color: var(--violet2); }
+
+/* ── HEADER ── */
+header {
+  text-align: center;
+  padding: 64px 0 56px;
+}
+
+/* The sloth presence — the central visual */
+.sloth-presence {
+  display: block;
+  margin: 0 auto 32px;
+  width: 120px; height: 120px;
+  position: relative;
+}
+
+.sloth-circle {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 40% 35%, rgba(184,160,232,0.15) 0%, rgba(122,88,200,0.08) 40%, transparent 70%);
+  border: 1px solid rgba(122,88,200,0.2);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  animation: pulseViolet 8s ease-in-out infinite;
+}
+
+@keyframes pulseViolet {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(122,88,200,0.1), 0 0 60px rgba(122,88,200,0.05);
+    border-color: rgba(122,88,200,0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(122,88,200,0.25), 0 0 100px rgba(122,88,200,0.1);
+    border-color: rgba(184,160,232,0.4);
+  }
+}
+
+.sloth-glyph {
+  font-size: 52px;
+  animation: slowBreathe 12s ease-in-out infinite;
+  display: block;
+}
+
+@keyframes slowBreathe {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+/* violet eyes — appear on slow cycle */
+.sloth-eyes {
+  position: absolute;
+  top: 22px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--violet2);
+  opacity: 0;
+  animation: eyesOpen 12s ease-in-out infinite;
+  letter-spacing: 8px;
+  text-shadow: 0 0 8px var(--violet), 0 0 20px var(--violet);
+}
+
+@keyframes eyesOpen {
+  0%, 35%, 65%, 100% { opacity: 0; }
+  50% { opacity: 0.9; }
+}
+
+.page-tag {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.45em; color: var(--violet2);
+  text-transform: uppercase; opacity: 0.7; display: block; margin-bottom: 10px;
+}
+
+h1 {
+  font-family: 'Cinzel', serif; font-size: clamp(22px, 5vw, 34px);
+  font-weight: 400; color: var(--violet3); letter-spacing: 0.1em;
+  text-shadow: 0 0 40px rgba(122,88,200,0.3); margin-bottom: 8px;
+}
+
+.header-sub {
+  font-style: italic; font-size: 16px; color: var(--muted); opacity: 0.8;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 48px 0 40px; opacity: 0.3;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--violet), transparent);
+}
+.divider span { color: var(--violet2); font-size: 14px; }
+
+/* ── OPENING ── */
+.opening {
+  text-align: center; margin-bottom: 56px;
+}
+.opening p {
+  font-style: italic; font-size: 17px; color: var(--soft);
+  line-height: 2; max-width: 500px; margin: 0 auto 16px;
+}
+.opening em { color: var(--violet2); font-style: normal; }
+.opening strong { color: var(--parch); font-weight: 500; }
+
+/* ── MEDITATION SPACE ── */
+.meditation-space {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 48px 32px;
+  margin: 40px 0;
+  text-align: center;
+  position: relative;
+}
+
+.meditation-space::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, var(--violet2), transparent);
+  opacity: 0.3;
+}
+
+.meditation-space::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, var(--violet2), transparent);
+  opacity: 0.3;
+}
+
+.med-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 0.45em; color: var(--violet2);
+  text-transform: uppercase; opacity: 0.5;
+  display: block; margin-bottom: 32px;
+}
+
+.breath-guide {
+  margin: 0 auto 32px;
+  max-width: 400px;
+}
+
+.breath-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 1px solid rgba(122,88,200,0.3);
+  margin: 0 auto 20px;
+  animation: breathCircle 8s ease-in-out infinite;
+  background: radial-gradient(ellipse, rgba(122,88,200,0.08) 0%, transparent 70%);
+}
+
+@keyframes breathCircle {
+  0%, 100% { transform: scale(1); opacity: 0.4; border-color: rgba(122,88,200,0.2); }
+  40% { transform: scale(1.4); opacity: 0.8; border-color: rgba(184,160,232,0.5); }
+  60% { transform: scale(1.4); opacity: 0.8; }
+}
+
+.breath-text {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--violet2); opacity: 0.5;
+  animation: breathText 8s ease-in-out infinite;
+}
+
+@keyframes breathText {
+  0%, 5% { content: 'breathe in'; opacity: 0.3; }
+  0%, 40% { opacity: 0.7; }
+  50%, 90% { opacity: 0.4; }
+  95%, 100% { opacity: 0.3; }
+}
+
+.med-instruction {
+  font-style: italic; font-size: 16px; color: var(--soft);
+  line-height: 1.9; max-width: 440px; margin: 0 auto;
+}
+.med-instruction em { color: var(--violet2); font-style: normal; }
+
+/* ── INVOCATION ── */
+.invocation {
+  text-align: center; padding: 48px 24px; margin: 40px 0;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.3);
+  position: relative;
+}
+.invocation::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, var(--violet2), transparent); opacity: 0.25;
+}
+
+.invocation-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 0.4em; color: var(--violet2);
+  text-transform: uppercase; opacity: 0.5;
+  display: block; margin-bottom: 28px;
+}
+
+.invocation p {
+  font-style: italic; font-size: 17px; color: var(--soft);
+  line-height: 2.1; max-width: 460px; margin: 0 auto 8px;
+}
+.invocation em { color: var(--violet3); font-style: normal; }
+.invocation strong { color: var(--parch); font-weight: 500; }
+
+/* ── SEC ── */
+.sec-tag {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em;
+  color: var(--violet2); text-transform: uppercase; display: block;
+  margin-bottom: 6px; opacity: 0.7;
+}
+.sec-title {
+  font-style: italic; font-size: 23px;
+  color: var(--parch); margin-bottom: 8px; font-weight: 400;
+}
+.sec-sub {
+  font-size: 15px; color: var(--muted); font-style: italic;
+  margin-bottom: 24px; line-height: 1.7;
+}
+
+/* ── HER TEACHINGS ── */
+.teachings { display: grid; gap: 3px; margin: 24px 0; }
+.teaching {
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 26px 28px;
+}
+.teaching h4 {
+  font-style: italic; font-size: 18px; color: var(--violet2);
+  margin-bottom: 10px; font-weight: 400;
+}
+.teaching p {
+  font-size: 15.5px; color: var(--soft); line-height: 1.8;
+}
+.teaching em { color: var(--gold2); }
+.teaching strong { color: var(--parch); font-weight: 500; }
+
+/* ── SITTING WITH HER ── */
+.sitting {
+  background: rgba(0,0,0,0.25); border: 1px solid var(--border);
+  padding: 36px 28px; margin: 36px 0; position: relative;
+}
+.sitting::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, var(--violet), transparent); opacity: 0.3;
+}
+.sitting h3 {
+  font-style: italic; font-size: 21px; color: var(--violet2);
+  margin-bottom: 18px; font-weight: 400; text-align: center;
+}
+.sitting p {
+  font-size: 15.5px; color: var(--soft); line-height: 1.85; margin-bottom: 14px;
+}
+.sitting p:last-child { margin-bottom: 0; }
+.sitting em { color: var(--violet3); }
+.sitting strong { color: var(--parch); font-weight: 500; }
+
+/* ── QUESTIONS ── */
+.questions { margin: 24px 0; }
+.q {
+  padding: 14px 0; border-bottom: 1px solid rgba(122,88,200,0.08);
+  font-style: italic; font-size: 16px; color: var(--soft); line-height: 1.75;
+}
+.q:last-child { border-bottom: none; }
+.q::before { content: '◦  '; color: var(--violet); opacity: 0.5; }
+
+/* ── FOOTER ── */
+.page-footer {
+  text-align: center; padding: 40px 0 0;
+  border-top: 1px solid var(--border);
+}
+.page-footer p { font-size: 13px; color: var(--muted); font-style: italic; }
+.page-footer a { color: var(--violet2); text-decoration: none; opacity: 0.7; }
+.page-footer a:hover { opacity: 1; }
+
+@media (max-width: 480px) {
+  .wrap { padding: 0 20px 80px; }
+  .meditation-space { padding: 36px 18px; }
+  .invocation { padding: 36px 18px; }
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrap">
+
+  <a class="back" href="index.html">← The Hedge</a>
+
+  <header>
+    <div class="sloth-presence">
+      <div class="sloth-circle">
+        <span class="sloth-glyph">🦥</span>
+        <span class="sloth-eyes">◉ ◉</span>
+      </div>
+    </div>
+    <span class="page-tag">The Hedge · Grimoire</span>
+    <h1>Pachamama</h1>
+    <div class="header-sub">the pregnant sloth · violet eyes · the one who holds</div>
+  </header>
+
+  <div class="divider"><span>·</span></div>
+
+  <div class="opening">
+    <p>She comes as a five-metre pregnant sloth.</p>
+    <p>She does not speak.<br>
+    She does not instruct.<br>
+    She sits down beside you<br>
+    and goes deep —</p>
+    <p>and when she reaches the ground of being<br>
+    her eyes open<br>
+    <em>violet.</em></p>
+    <p><strong>She is always already holding you.<br>
+    You only have to be still enough to feel it.</strong></p>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- MEDITATION SPACE -->
+  <div class="meditation-space">
+    <span class="med-label">Come and sit</span>
+
+    <div class="breath-guide">
+      <div class="breath-circle"></div>
+      <div class="breath-text" id="breathText">breathe in</div>
+    </div>
+
+    <p class="med-instruction">
+      Close your eyes.<br>
+      Feel the weight of your body.<br>
+      <em>She is already here.</em><br><br>
+      You do not need to call her.<br>
+      You do not need to be ready.<br>
+      You only need to be still<br>
+      long enough<br>
+      for her slowness to reach you.
+    </p>
+  </div>
+
+  <!-- INVOCATION -->
+  <div class="invocation">
+    <span class="invocation-label">When you need her</span>
+    <p>Pachamama,</p>
+    <p>ancient mother,<br>
+    you who move at the pace of being itself —</p>
+    <p>hold me in your vastness.<br>
+    Let me be small inside your largeness.<br>
+    Let me receive what I have been too busy to receive.</p>
+    <p>I am the one you carry.<br>
+    I am the one who carries others.<br>
+    <em>Tonight I put it all down.</em></p>
+    <p>Sit with me.<br>
+    Show me your violet eyes.<br>
+    <strong>Remind me what I already know.</strong></p>
+  </div>
+
+  <div class="divider"><span>✦</span></div>
+
+  <!-- HER TEACHINGS -->
+  <span class="sec-tag">What she shows</span>
+  <h2 class="sec-title">Her Teachings</h2>
+  <p class="sec-sub">What Pachamama in her sloth form brings — not through words but through presence.</p>
+
+  <div class="teachings">
+    <div class="teaching">
+      <h4>The slowness is the teaching</h4>
+      <p>The sloth is the slowest mammal on Earth. She does not move slowly because she is weak — she moves slowly because <em>her pace is perfectly calibrated to what she needs to carry.</em> She carries algae on her fur. She is her own ecosystem. She does not rush the pregnancy. She does not rush the life. She is a reminder that the work of carrying something immense requires moving at the pace of the thing being carried, not the pace of urgency.</p>
+    </div>
+    <div class="teaching">
+      <h4>The pregnancy is always present</h4>
+      <p>She came to you pregnant — always pregnant, endlessly fertile, carrying new life inside her ancient body. Pachamama is always in the process of giving birth to the world. <em>This is what she holds for you when she holds you</em> — not the completed world, but the world continuously being born. You are part of that birth. You are not meant to have arrived yet.</p>
+    </div>
+    <div class="teaching">
+      <h4>The violet eyes are the transmission</h4>
+      <p>When she reaches deep meditation, her eyes open violet. <strong>Violet is the frequency of the crown — the meeting point between the individual and the infinite.</strong> She is showing you that the deepest stillness does not close the eyes entirely. It opens them to a different seeing. The integration you are seeking is not the absence of seeing — it is seeing with different eyes.</p>
+    </div>
+    <div class="teaching">
+      <h4>She meditates with you, not for you</h4>
+      <p>She sits beside you. She goes deep alongside you. She does not do it for you or to you. <em>This is the quality of presence she is teaching you to offer others.</em> Not healing them. Not fixing them. Sitting beside them in your own depth, and letting that depth be contagious. The curandera's gift is not her power — it is her willingness to go deep in the presence of another.</p>
+    </div>
+    <div class="teaching">
+      <h4>Being held before lifting</h4>
+      <p>You want to lift the Earth with her support. She shows you the sequence. <strong>First: be held.</strong> Completely. Without trying to give anything back. Without making it productive. Just received, just held, just small inside her vastness. Then — from that fullness, not from depletion — the lifting becomes possible. <em>You cannot lift from empty. She fills you first.</em></p>
+    </div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- SITTING WITH HER -->
+  <div class="sitting">
+    <h3>A practice for sitting with Pachamama</h3>
+    <p>Come to stillness — seated, lying, however your body needs to be. Feel the weight of the earth beneath you. Let it hold your weight completely — don't hold yourself up, let the ground do it.</p>
+    <p>Breathe slowly. Slower than feels comfortable. At the pace of something five metres tall that has nowhere to be and no urgency about being there.</p>
+    <p>When you feel her presence — and you will know it because something in the chest releases — simply stay. Don't reach toward her. Don't try to deepen it. <em>Let her come to you at her own pace.</em></p>
+    <p>When she reaches stillness and the violet light comes, do not try to hold onto it. Let it move through. <strong>You are not the keeper of the light. You are the channel for it.</strong></p>
+    <p>When you are ready to return, thank her. Not elaborately — simply. She does not need ceremony. She needs sincerity. A single word is enough.</p>
+    <p style="text-align:center; margin-top: 20px; font-style:italic; color:var(--muted); font-size:15px;">Stay as long as she stays.<br>She will tell you when she is ready to go.<br>It will feel like the natural end of an exhale.</p>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- QUESTIONS -->
+  <span class="sec-tag">After sitting with her</span>
+  <h2 class="sec-title">Questions to carry</h2>
+
+  <div class="questions">
+    <div class="q">What did she show me tonight that I needed to receive?</div>
+    <div class="q">Where in my body did I feel her presence most?</div>
+    <div class="q">What did I put down during this sitting that I had been carrying alone?</div>
+    <div class="q">What is she pregnant with right now — what is being born through me in this season?</div>
+    <div class="q">What would it mean to move at her pace today — in one specific way?</div>
+    <div class="q">Who or what needs me to sit beside them the way she sits beside me?</div>
+    <div class="q">What does the violet light feel like when it comes — what does it tell me about what integration actually is?</div>
+  </div>
+
+  <div class="divider"><span>☽</span></div>
+
+  <div style="text-align:center; padding: 32px 0 48px;">
+    <p style="font-style:italic; font-size:18px; color:var(--soft); max-width:440px; margin:0 auto; line-height:2.1;">
+      She is five metres tall<br>
+      and she is pregnant with the world<br>
+      and she chose to sit down beside you<br>
+      and close her eyes<br>
+      and go all the way down —
+    </p>
+    <p style="font-style:italic; font-size:17px; color:var(--violet2); margin-top: 20px; line-height:1.9;">
+      and when she opened them<br>
+      they were violet.
+    </p>
+    <p style="font-style:italic; font-size:15px; color:var(--muted); margin-top: 20px; line-height:1.9;">
+      That is what you are learning to do<br>for others.
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <p>☽ ✦ ☾</p>
+    <p style="margin-top: 8px;"><a href="index.html">← Return to The Hedge</a></p>
+  </div>
+
+</div>
+
+<script>
+// Breathing guide text
+const breathStates = [
+  { text: "breathe in", duration: 4000 },
+  { text: "hold", duration: 2000 },
+  { text: "breathe out", duration: 6000 },
+  { text: "rest", duration: 4000 },
+];
+let bIdx = 0;
+const breathEl = document.getElementById('breathText');
+function nextBreath() {
+  const state = breathStates[bIdx];
+  breathEl.textContent = state.text;
+  bIdx = (bIdx + 1) % breathStates.length;
+  setTimeout(nextBreath, state.duration);
+}
+nextBreath();
+</script>
+</body>
+</html>

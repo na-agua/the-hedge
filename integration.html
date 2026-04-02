@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Integration · The Hedge</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cinzel:wght@400;500&display=swap');
+
+:root {
+  --night: #09080f;
+  --gold: #b8923a;
+  --gold2: #d4ae6a;
+  --parch: #e8e0d0;
+  --muted: #7a7060;
+  --soft: #a89880;
+  --amber: #c8884a;
+  --amber2: #e8b87a;
+  --border: rgba(184,146,58,0.12);
+  --border-amber: rgba(200,136,74,0.2);
+  --surface: rgba(255,255,255,0.02);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--night);
+  color: var(--parch);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px; line-height: 1.9; overflow-x: hidden;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 25% 20%, rgba(120,80,40,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 80%, rgba(80,60,120,0.05) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+.stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 6% 11%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 19% 36%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 38% 7%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 27%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 71% 57%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 16%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 93% 67%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 12% 78%, rgba(255,255,255,0.27) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 88%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 77% 92%, rgba(255,255,255,0.27) 0%, transparent 100%);
+}
+.wrap {
+  position: relative; z-index: 1;
+  max-width: 680px; margin: 0 auto; padding: 0 28px 120px;
+}
+.back {
+  display: inline-block; padding: 20px 0 0;
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.3em; color: var(--muted);
+  text-decoration: none; text-transform: uppercase; transition: color 0.2s;
+}
+.back:hover { color: var(--amber2); }
+
+header { text-align: center; padding: 48px 0 52px; }
+.header-glyph {
+  font-size: 52px; display: block; margin-bottom: 16px;
+  animation: breathe 12s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+.page-tag {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.45em; color: var(--amber2);
+  text-transform: uppercase; opacity: 0.7; display: block; margin-bottom: 10px;
+}
+h1 {
+  font-family: 'Cinzel', serif; font-size: clamp(22px, 5vw, 34px);
+  font-weight: 400; color: var(--amber2); letter-spacing: 0.1em;
+  text-shadow: 0 0 40px rgba(200,136,74,0.2); margin-bottom: 6px;
+}
+.header-sub { font-style: italic; font-size: 16px; color: var(--muted); opacity: 0.8; }
+
+.divider {
+  display: flex; align-items: center; gap: 16px; margin: 44px 0 36px; opacity: 0.35;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--amber), transparent);
+}
+.divider span { color: var(--amber); font-size: 14px; }
+
+.opening { text-align: center; margin-bottom: 48px; }
+.opening p {
+  font-style: italic; font-size: 17px; color: var(--soft);
+  line-height: 1.9; max-width: 520px; margin: 0 auto 14px;
+}
+.opening em { color: var(--amber2); font-style: normal; }
+.opening strong { color: var(--parch); font-weight: 500; }
+
+/* ── SECTION ── */
+.sec-tag {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em;
+  color: var(--amber2); text-transform: uppercase; display: block;
+  margin-bottom: 6px; opacity: 0.7;
+}
+.sec-title {
+  font-style: italic; font-size: 24px;
+  color: var(--parch); margin-bottom: 8px; font-weight: 400;
+}
+.sec-sub {
+  font-size: 15px; color: var(--muted); font-style: italic;
+  margin-bottom: 24px; line-height: 1.7;
+}
+
+/* ── PRINCIPLE CARDS ── */
+.principles { display: grid; gap: 3px; margin: 24px 0; }
+.principle {
+  background: var(--surface); border: 1px solid var(--border-amber);
+  padding: 24px 26px;
+}
+.principle-num {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.3em;
+  color: var(--amber); text-transform: uppercase; display: block;
+  margin-bottom: 8px; opacity: 0.6;
+}
+.principle h4 {
+  font-style: italic; font-size: 19px; color: var(--parch);
+  margin-bottom: 10px; font-weight: 400;
+}
+.principle p { font-size: 15.5px; color: var(--soft); line-height: 1.75; }
+.principle em { color: var(--amber2); }
+.principle strong { color: var(--parch); font-weight: 500; }
+
+/* ── TIMELINE ── */
+.timeline { margin: 24px 0; }
+.phase-block {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--phase-col, var(--amber));
+  padding: 24px 26px; margin-bottom: 3px;
+  cursor: pointer; transition: background 0.25s;
+}
+.phase-block:hover, .phase-block.open { background: rgba(200,136,74,0.04); }
+.phase-header { display: flex; align-items: center; gap: 14px; }
+.phase-glyph { font-size: 24px; flex-shrink: 0; }
+.phase-info { flex: 1; }
+.phase-name {
+  font-style: italic; font-size: 18px; color: var(--parch);
+  display: block; margin-bottom: 2px;
+}
+.phase-when {
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--phase-col, var(--amber)); opacity: 0.7;
+}
+.phase-toggle {
+  color: var(--phase-col, var(--amber)); opacity: 0.4; font-size: 16px;
+  transition: transform 0.3s, opacity 0.3s; flex-shrink: 0;
+}
+.phase-block.open .phase-toggle { transform: rotate(180deg); opacity: 0.8; }
+.phase-body {
+  display: none; padding-top: 18px; margin-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.phase-block.open .phase-body { display: block; }
+.phase-body p {
+  font-size: 15.5px; color: var(--soft); line-height: 1.8; margin-bottom: 14px;
+}
+.phase-body p:last-child { margin-bottom: 0; }
+.phase-body em { color: var(--amber2); }
+.phase-body strong { color: var(--parch); font-weight: 500; }
+
+/* ── QUESTIONS ── */
+.q-group { margin-bottom: 32px; }
+.q-group-title {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.35em;
+  text-transform: uppercase; color: var(--amber2); opacity: 0.8;
+  display: block; margin-bottom: 14px;
+}
+.question {
+  padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-style: italic; font-size: 16px; color: var(--soft); line-height: 1.75;
+}
+.question:last-child { border-bottom: none; }
+.question::before { content: '◦  '; color: var(--amber); opacity: 0.6; }
+
+/* ── THE UNSPEAKABLE ── */
+.unspeakable {
+  background: rgba(0,0,0,0.3); border: 1px solid var(--border-amber);
+  padding: 32px 28px; margin: 28px 0; position: relative;
+}
+.unspeakable::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--amber2), transparent); opacity: 0.4;
+}
+.unspeakable h3 {
+  font-style: italic; font-size: 21px; color: var(--amber2);
+  margin-bottom: 16px; font-weight: 400;
+}
+.unspeakable p {
+  font-size: 15.5px; color: var(--soft); line-height: 1.8; margin-bottom: 12px;
+}
+.unspeakable p:last-child { margin-bottom: 0; }
+.unspeakable em { color: var(--gold2); }
+.unspeakable strong { color: var(--parch); font-weight: 500; }
+
+/* ── CURANDERA ── */
+.curandera {
+  background: rgba(120,80,40,0.06); border: 1px solid var(--border-amber);
+  padding: 32px 28px; margin: 28px 0; position: relative;
+}
+.curandera::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--amber), transparent); opacity: 0.5;
+}
+.curandera h3 {
+  font-style: italic; font-size: 21px; color: var(--amber2);
+  margin-bottom: 16px; font-weight: 400;
+}
+.curandera p {
+  font-size: 15.5px; color: var(--soft); line-height: 1.8; margin-bottom: 12px;
+}
+.curandera p:last-child { margin-bottom: 0; }
+.curandera em { color: var(--gold2); }
+.curandera strong { color: var(--parch); font-weight: 500; }
+.curandera-q {
+  padding: 12px 16px; margin-top: 4px;
+  background: rgba(0,0,0,0.2); border-left: 2px solid var(--amber);
+  font-size: 15px; font-style: italic; color: var(--muted); line-height: 1.7;
+  margin-bottom: 6px;
+}
+.curandera-q::before {
+  content: '☽  ';
+  color: var(--amber); opacity: 0.6; font-style: normal;
+}
+
+/* ── BODY PRACTICES ── */
+.practices { display: grid; gap: 3px; margin: 24px 0; }
+.practice {
+  background: var(--surface); border: 1px solid var(--border-amber);
+  padding: 22px 24px;
+}
+.practice h4 {
+  font-style: italic; font-size: 17px; color: var(--amber2);
+  margin-bottom: 8px; font-weight: 400;
+}
+.practice p { font-size: 15px; color: var(--soft); line-height: 1.75; }
+.practice em { color: var(--gold2); }
+
+/* ── CLOSING ── */
+.page-footer {
+  text-align: center; padding: 40px 0 0;
+  border-top: 1px solid var(--border);
+}
+.page-footer p { font-size: 13px; color: var(--muted); font-style: italic; }
+.page-footer a { color: var(--amber2); text-decoration: none; opacity: 0.7; }
+.page-footer a:hover { opacity: 1; }
+
+@media (max-width: 480px) {
+  .wrap { padding: 0 20px 80px; }
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrap">
+
+  <a class="back" href="index.html">← The Hedge</a>
+
+  <header>
+    <span class="header-glyph">✦</span>
+    <span class="page-tag">The Hedge · Grimoire</span>
+    <h1>The Integration</h1>
+    <div class="header-sub">bringing what you touched into your hands</div>
+  </header>
+
+  <div class="divider"><span>·</span></div>
+
+  <div class="opening">
+    <p>You have been to places<br>that have no address in ordinary language.</p>
+    <p>You have touched the ground of being.<br>
+    You have seen what is beneath the seeing.<br>
+    You have been held by something<br>that has no name in any human tongue.</p>
+    <p><em>The work is not more knowing.</em><br>
+    <strong>The work is landing.</strong></p>
+    <p>Integration is not the explanation of the experience.<br>
+    It is the slow, patient work of letting<br>
+    what you touched above<br>
+    move all the way down into your feet.</p>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- FOUNDATIONS -->
+  <span class="sec-tag">The foundation</span>
+  <h2 class="sec-title">What Integration Actually Is</h2>
+  <p class="sec-sub">For the advanced practitioner who has already had multiple openings across multiple traditions.</p>
+
+  <div class="principles">
+    <div class="principle">
+      <span class="principle-num">First principle</span>
+      <h4>The experience is complete. The integration is the rest of your life.</h4>
+      <p>The medicine or the practice opened a door. You walked through. <em>Integration is not going back through that door — it is learning to live as someone who has been through it.</em> There is no finish line. There is only: how much of what I touched can I embody today, in this ordinary moment, with this ordinary person in front of me?</p>
+    </div>
+    <div class="principle">
+      <span class="principle-num">Second principle</span>
+      <h4>Understanding is not integration.</h4>
+      <p>You can understand an experience completely — map it, name it, place it in a tradition, explain it to someone else — and still not have integrated it. <em>Integration happens in the body, in relationship, in action.</em> The measure is not how clearly you can describe what happened. The measure is how you treat the person in front of you on an ordinary Tuesday.</p>
+    </div>
+    <div class="principle">
+      <span class="principle-num">Third principle</span>
+      <h4>The gap between vision and embodiment is not failure.</h4>
+      <p>You have seen the light completely. You know what is possible. And then you return to a body with old patterns, old wounds, old fears — and the gap between what you saw and how you live can feel unbearable. <strong>This gap is not evidence that the experience wasn't real.</strong> It is evidence that you are human, and that embodiment is the most difficult work there is.</p>
+    </div>
+    <div class="principle">
+      <span class="principle-num">Fourth principle</span>
+      <h4>What arose that was difficult is as important as what was beautiful.</h4>
+      <p>The medicine shows you everything — not just the light. What surfaced that was painful, confronting, or dark is not a mistake or a bad trip. <em>It is the shadow asking to be included in the integration.</em> The Crone comes to Ayahuasca ceremonies. She is not there to destroy you. She is there to show you what needs to be seen.</p>
+    </div>
+    <div class="principle">
+      <span class="principle-num">Fifth principle</span>
+      <h4>You cannot give what you have not yet landed.</h4>
+      <p>The curandera's work — touching and opening hearts, being a vessel for healing — requires that what she carries has been metabolized into her body, not just held in her vision. <em>Integration is not preparation for service. It is the service itself, done on yourself first.</em></p>
+    </div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- THE UNSPEAKABLE -->
+  <div class="unspeakable">
+    <h3>Working with what has no language</h3>
+    <p>Some experiences resist language completely. Not because they are vague, but because they are too precise — too specific to a frequency that words were not built to carry. The dissolution of self. The recognition of something that was always true. The contact with what is before form. <em>Dimensions, lives, planets, beings, the ground of being itself.</em></p>
+    <p>When language fails, these carry the experience instead:</p>
+    <p><strong>The body</strong> — where did you feel it? Locate it physically. A sensation, a warmth, a quality of presence. The body remembers what the mind cannot articulate.</p>
+    <p><strong>Drawing, color, mark-making</strong> — not to make something beautiful. To make something true. Crayon, charcoal, whatever. Let the hand move without the mind directing.</p>
+    <p><strong>Sound</strong> — a tone, a hum, a note that carries the frequency. Some experiences can be sung that cannot be spoken.</p>
+    <p><strong>A single word or image as an anchor</strong> — not to explain the experience but to mark it. A word that points toward it from outside, like a cairn on a path. You will know the word when you find it.</p>
+    <p><strong>Silence held consciously</strong> — sitting with what cannot be said, and choosing not to fill it with approximations. Sometimes the most integrous response to the unspeakable is to protect its silence.</p>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- TIMELINE -->
+  <span class="sec-tag">The arc of integration</span>
+  <h2 class="sec-title">Five Phases Over Time</h2>
+  <p class="sec-sub">Tap each phase to open it fully.</p>
+
+  <div class="timeline" id="timeline"></div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- QUESTIONS -->
+  <span class="sec-tag">The questions</span>
+  <h2 class="sec-title">Integration Journal</h2>
+  <p class="sec-sub">Not all questions are for all experiences. Find the ones that feel alive for this particular opening.</p>
+
+  <div class="q-group">
+    <span class="q-group-title">Immediately after — within 24 hours</span>
+    <div class="question">What do I know now that I didn't know before? Not understood — know.</div>
+    <div class="question">What in my body feels different? Where?</div>
+    <div class="question">What was the most uncomfortable moment? What was it showing me?</div>
+    <div class="question">What was I shown about myself that I have been avoiding?</div>
+    <div class="question">If I could carry only one thing back from this experience, what would it be?</div>
+    <div class="question">What needs to be written before it fades — even in fragments, even in broken language?</div>
+  </div>
+
+  <div class="q-group">
+    <span class="q-group-title">The first week — while it is still close</span>
+    <div class="question">What has shifted in how I relate to my own body?</div>
+    <div class="question">Where am I still resisting what I was shown?</div>
+    <div class="question">What did I see about my relationships that I now need to address?</div>
+    <div class="question">What pattern in my life did this experience illuminate most clearly?</div>
+    <div class="question">What is the medicine asking me to change in my daily life?</div>
+    <div class="question">What part of the experience am I already explaining away or minimizing?</div>
+    <div class="question">What symbol, image, or being appeared that I am still sitting with?</div>
+  </div>
+
+  <div class="q-group">
+    <span class="q-group-title">The first month — the slow landing</span>
+    <div class="question">Where is the experience still alive in my body?</div>
+    <div class="question">What have I actually changed in my life as a result of this experience?</div>
+    <div class="question">What was I shown about my vocation — what I am here to do?</div>
+    <div class="question">Where am I still performing the insight rather than living it?</div>
+    <div class="question">What does this experience ask of me in relation to others?</div>
+    <div class="question">What old identity is this experience asking me to release?</div>
+    <div class="question">Where does the gap between what I saw and how I live hurt most?</div>
+  </div>
+
+  <div class="q-group">
+    <span class="q-group-title">Long arc — months and years</span>
+    <div class="question">How has this experience changed how I meet suffering — my own and others'?</div>
+    <div class="question">What wisdom from this experience has become ordinary, lived, embodied?</div>
+    <div class="question">What from this experience am I still carrying above my head rather than in my hands?</div>
+    <div class="question">How has this opening changed my relationship with death?</div>
+    <div class="question">What does the person I was shown I could become require of me today — not eventually, today?</div>
+    <div class="question">How am I serving the living and the dying differently because of what I have touched?</div>
+  </div>
+
+  <div class="q-group">
+    <span class="q-group-title">For experiences beyond language — non-ordinary, transpersonal, cosmic</span>
+    <div class="question">What did I touch that had always been true but that I had never directly seen?</div>
+    <div class="question">What is the relationship between what I experienced and this specific body, this specific life?</div>
+    <div class="question">If what I touched is real — and it is — what does that change about how I live today?</div>
+    <div class="question">What do the other lives, dimensions, or beings I encountered have to do with this one?</div>
+    <div class="question">What is the medicine asking me to bring back to Earth specifically?</div>
+    <div class="question">How do I stay tethered to the ground of ordinary human life while carrying what I carry?</div>
+    <div class="question">What is the difference between what I was shown and what I am projecting onto the experience?</div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- CURANDERA -->
+  <div class="curandera">
+    <h3>For the one who carries this for others</h3>
+    <p>You are not integrating for yourself alone. You are integrating so that what you carry becomes medicine in your hands — a quality of presence, a capacity for contact, an ability to be with what is without being swept away by it.</p>
+    <p>The curandera who has not integrated her own openings becomes a vessel that leaks. Not through malice but through unfinished business — the places where her own wound is still raw enough to be activated by the wounds of the people she is trying to serve.</p>
+    <p><em>The most important question for the one who carries this for others is not "what did I learn?" but "am I clean enough to be a clear channel today?"</em></p>
+    <p>This is not about being perfect. It is about knowing your own landscape well enough to know when you are in your own material and when you are in someone else's. Integration builds this discernment.</p>
+
+    <div class="curandera-q">After this experience, where am I most raw? Where in my own wound am I most vulnerable to being activated?</div>
+    <div class="curandera-q">What did this opening show me about my capacity to be with others in their darkness without fixing, rescuing, or projecting?</div>
+    <div class="curandera-q">What quality of presence was I given in this experience that I want to cultivate and offer?</div>
+    <div class="curandera-q">Where do I still need my own healing before I can truly serve in this way?</div>
+    <div class="curandera-q">How do I stay in contact with the source — the light, the ground, the medicine — in the ordinary days between the extraordinary ones?</div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- BODY PRACTICES -->
+  <span class="sec-tag">Grounding the experience</span>
+  <h2 class="sec-title">Practices for Integration</h2>
+  <p class="sec-sub">The body is the integration vessel. These are not substitutes for sitting with what arose — they are ways to help it land.</p>
+
+  <div class="practices">
+    <div class="practice">
+      <h4>The first hour — do nothing</h4>
+      <p>After the experience ends, before anything else: lie down, let the body be still, and do not reach for your phone, your notebook, or another person. Let the experience settle in the silence. <em>What wants to be the first thing that arises on its own is important.</em></p>
+    </div>
+    <div class="practice">
+      <h4>Write in fragments, not narrative</h4>
+      <p>Don't try to tell the story in order. Write whatever images, words, or feelings are most alive — in fragments, out of sequence, without explanation. The narrative can come later. <em>First, catch what is most true before the mind organizes it into something manageable.</em></p>
+    </div>
+    <div class="practice">
+      <h4>The body scan — three days after</h4>
+      <p>Three days after the experience, lie down and slowly move awareness through the entire body from feet to crown. Notice where the experience still lives as sensation. <em>These locations are where the integration is still working.</em> Place your hands there. Breathe into them. Stay.</p>
+    </div>
+    <div class="practice">
+      <h4>Return to nature within 48 hours</h4>
+      <p>Bare feet on earth, body in water, hands in soil, face in wind. The medicine came from the living world. After the experience, return to the living world. <em>Trees, particularly, are excellent integration companions — their rootedness is medicine for the ungrounded.</em></p>
+    </div>
+    <div class="practice">
+      <h4>The LBRP as integration practice</h4>
+      <p>Kraig's Lesser Banishing Ritual of the Pentagram is not just protection — performed after a significant opening, it helps reseal the aura and reorient the self within ordinary space and time. Do it slowly, with full intention. <em>Feel the directions. Feel the archangels. Let the ritual say: I am here, in this body, in this world.</em></p>
+    </div>
+    <div class="practice">
+      <h4>One change in ordinary life</h4>
+      <p>Within one week of the experience, make one concrete change in your ordinary daily life that reflects what you were shown. Not a dramatic gesture — one small, real, sustainable change. <em>This is how you tell the medicine that you received what it gave.</em></p>
+    </div>
+    <div class="practice">
+      <h4>The full moon integration ritual</h4>
+      <p>On the first full moon after a significant experience, take what you are still carrying to the moon. Sit outside or by a window with moonlight. Ask: <em>what from this experience is ready to be released? What is ready to become part of who I am?</em> These are different things. Honor both.</p>
+    </div>
+    <div class="practice">
+      <h4>Sitting with what you cannot explain</h4>
+      <p>Some of what you experienced will never be fully integrated because it is not meant to be understood — it is meant to be carried. <em>There are things the medicine gives you that are not for your mind. They are for your presence.</em> The practice is to stop trying to resolve them and learn to carry them with grace.</p>
+    </div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- CLOSING -->
+  <div style="text-align:center; padding: 32px 0 48px;">
+    <p style="font-style:italic; font-size:18px; color:var(--soft); max-width:480px; margin:0 auto 16px; line-height:2;">
+      The light you touched is real.<br>
+      The distance between that light and this life is real.<br>
+      The work of closing that distance —<br>
+      slowly, imperfectly, with great patience —<br>
+      <em>that is the practice.</em>
+    </p>
+    <p style="font-style:italic; font-size:16px; color:var(--muted); max-width:420px; margin:0 auto; line-height:1.9;">
+      Not to escape the Earth.<br>
+      To bring the light all the way down into it.<br>
+      Into your hands.<br>
+      Into your voice.<br>
+      Into the eyes of the person in front of you.
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <p>☽ ✦ ☾</p>
+    <p style="margin-top: 8px;"><a href="index.html">← Return to The Hedge</a></p>
+  </div>
+
+</div>
+
+<script>
+const PHASES = [
+  {
+    glyph: "🌊", name: "The Return",
+    when: "Hours 0–48 · The immediate aftermath",
+    col: "#c8884a",
+    desc: "The most delicate window. The experience is still close — the membrane between what you touched and ordinary consciousness is thin. This is not the time to explain, analyze, or share widely. It is the time to be gentle with yourself, to rest, to eat, to be in nature, to write in fragments.",
+    body: "Your nervous system has been through something enormous regardless of how the experience felt. Treat yourself as you would someone who has just come through a significant physical ordeal. Warmth, simple food, sleep, water. No alcohol. No screens if possible.",
+    practice: "Write immediately after, even in fragments. Sleep. Go outside. Let yourself be held by the physical world before re-entering the social one.",
+    watch: "The urge to immediately share or explain the experience before you have fully landed in it. The experience belongs to you first."
+  },
+  {
+    glyph: "🌿", name: "The Settling",
+    when: "Days 3–14 · When the glow begins to fade",
+    col: "#8ab87a",
+    desc: "The afterglow dims. Ordinary life reasserts itself. Sometimes a flatness arrives — a contrast grief between the peak of the experience and the ordinary weight of daily existence. This is normal. It is not evidence that the experience wasn't real or that it is wearing off. It is evidence that you are human.",
+    body: "This is when the shadow material often surfaces. What the medicine showed that was uncomfortable becomes harder to avoid now that the grace of the experience has faded. Do not bypass it. Shadow work done now, in this window, goes deep.",
+    practice: "Continue the journal. Begin asking the medium-range questions. If something is still unresolved from the experience, sit with it deliberately — in meditation, in the body, in shadow work.",
+    watch: "The temptation to seek another experience before this one has fully landed. The medicine has given you something — metabolize it before asking for more."
+  },
+  {
+    glyph: "🌱", name: "The Metabolizing",
+    when: "Weeks 2–8 · The slow digestion",
+    col: "#b8a8d8",
+    desc: "The experience moves from event to knowing. What you were shown begins to quietly reorganize how you see things. You may find yourself responding differently to situations that previously triggered you. Or the opposite — you may find old patterns reasserting themselves more strongly, as if the psyche is testing whether you really mean the change.",
+    body: "This is the most important window for making concrete changes in daily life. The vision is still close enough to guide you, and the nervous system is stable enough to support change. What needs to change in how you live?",
+    practice: "Make the one concrete change you identified. Bring the experience into your regular practice — LBRP, meditation, moon rituals — as felt reference points, not just memory.",
+    watch: "Spiritual bypassing — using the beauty and truth of the experience to avoid the ordinary, difficult work of changing what needs to change in daily life."
+  },
+  {
+    glyph: "🔥", name: "The Testing",
+    when: "Months 2–6 · When life asks you to prove it",
+    col: "#c8884a",
+    desc: "Life will test what you learned. The situations that most needed to change will present themselves again — in new forms, with new people — and ask: did you really integrate this, or did you just understand it? This is not punishment. It is the natural completion of the process.",
+    body: "When you find yourself back in an old pattern despite the opening — which you will — do not conclude that the experience failed or that you failed. Conclude that this particular layer of the pattern needs more attention. Go back to the questions. Go back to the shadow work.",
+    practice: "When the test comes, use it. Journal about what is being activated. Ask: what is this situation asking me to embody that the experience showed me was possible?",
+    watch: "Concluding that because you've had the experience, you should be beyond struggle. The experience shows you what is possible — it does not remove the humanness required to live it."
+  },
+  {
+    glyph: "✦", name: "The Embodiment",
+    when: "Months 6+ · When it becomes who you are",
+    col: "#d4ae6a",
+    desc: "Integration is complete — for this particular layer — when you no longer think about the experience as something that happened to you, but simply live differently because of it. The knowing has moved from the head into the hands. You meet others differently. You carry something they can feel without you having to explain it.",
+    body: "This is when the curandera's work becomes possible in its fullest form. Not because you are perfect or complete, but because this particular layer of what you carry has been metabolized enough to be offered without contamination from your own unfinished business.",
+    practice: "Offer what you have landed. In your practice, in your relationships, in how you show up for others. The integration completes itself in service.",
+    watch: "Mistaking this completion for the end of the work. There are always more layers. The spiral continues."
+  }
+];
+
+const container = document.getElementById('timeline');
+PHASES.forEach((p, i) => {
+  const block = document.createElement('div');
+  block.className = 'phase-block' + (i === 0 ? ' open' : '');
+  block.style.setProperty('--phase-col', p.col);
+  block.innerHTML = `
+    <div class="phase-header">
+      <span class="phase-glyph">${p.glyph}</span>
+      <div class="phase-info">
+        <span class="phase-name">${p.name}</span>
+        <span class="phase-when">${p.when}</span>
+      </div>
+      <span class="phase-toggle">▾</span>
+    </div>
+    <div class="phase-body">
+      <p>${p.desc}</p>
+      <p><strong>The body:</strong> <em>${p.body}</em></p>
+      <p><strong>Practice:</strong> <em>${p.practice}</em></p>
+      <p><strong>Watch for:</strong> <em>${p.watch}</em></p>
+    </div>
+  `;
+  block.addEventListener('click', () => block.classList.toggle('open'));
+  container.appendChild(block);
+});
+</script>
+</body>
+</html>
