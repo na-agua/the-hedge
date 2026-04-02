@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Wheel · The Hedge</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cinzel:wght@400;500&display=swap');
+
+:root {
+  --night: #09080f;
+  --gold: #b8923a;
+  --gold2: #d4ae6a;
+  --parch: #e8e0d0;
+  --muted: #7a7060;
+  --soft: #a89880;
+  --green: #6a9870;
+  --green2: #9ac89a;
+  --border: rgba(184,146,58,0.12);
+  --border-green: rgba(106,152,112,0.2);
+  --surface: rgba(255,255,255,0.02);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--night);
+  color: var(--parch);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 25% 35%, rgba(60,100,70,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 65%, rgba(184,146,58,0.04) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+.stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 6% 11%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 19% 37%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 37% 6%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 54% 27%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 57%, rgba(255,255,255,0.28) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 84% 17%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 66%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 13% 77%, rgba(255,255,255,0.27) 0%, transparent 100%),
+    radial-gradient(1px 1px at 46% 87%, rgba(255,255,255,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 76% 91%, rgba(255,255,255,0.27) 0%, transparent 100%);
+}
+
+.wrap {
+  position: relative; z-index: 1;
+  max-width: 680px; margin: 0 auto;
+  padding: 0 28px 120px;
+}
+
+.back {
+  display: inline-block; padding: 20px 0 0;
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.3em; color: var(--muted);
+  text-decoration: none; text-transform: uppercase;
+  transition: color 0.2s;
+}
+.back:hover { color: var(--green); }
+
+header { text-align: center; padding: 48px 0 52px; }
+
+.header-glyph {
+  font-size: 52px; display: block; margin-bottom: 16px;
+  animation: spin 60s linear infinite;
+}
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes breathe {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+.page-tag {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.45em; color: var(--green);
+  text-transform: uppercase; opacity: 0.7;
+  display: block; margin-bottom: 10px;
+}
+
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 400; color: var(--green2);
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 40px rgba(106,152,112,0.2);
+  margin-bottom: 6px;
+}
+
+.header-sub {
+  font-style: italic; font-size: 16px;
+  color: var(--muted); opacity: 0.8;
+}
+
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 44px 0 36px; opacity: 0.35;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--green), transparent);
+}
+.divider span { color: var(--green); font-size: 14px; }
+
+.opening {
+  text-align: center; margin-bottom: 48px;
+}
+.opening p {
+  font-style: italic; font-size: 17px;
+  color: var(--soft); line-height: 1.9;
+  max-width: 500px; margin: 0 auto 14px;
+}
+.opening em { color: var(--green2); font-style: normal; }
+.opening strong { color: var(--parch); font-weight: 500; }
+
+/* ── CURRENT SEASON BANNER ── */
+.season-now {
+  background: var(--surface);
+  border: 1px solid var(--border-green);
+  padding: 28px 28px 24px;
+  margin-bottom: 4px; text-align: center;
+  position: relative;
+}
+.season-now::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--green), transparent);
+  opacity: 0.5;
+}
+.season-now-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 0.45em; color: var(--green);
+  text-transform: uppercase; opacity: 0.6;
+  display: block; margin-bottom: 12px;
+}
+.season-now-glyph { font-size: 48px; display: block; margin-bottom: 10px; }
+.season-now-name {
+  font-style: italic; font-size: 22px;
+  color: var(--parch); display: block; margin-bottom: 4px;
+}
+.season-now-date {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.2em; color: var(--green);
+  text-transform: uppercase; display: block; margin-bottom: 14px; opacity: 0.7;
+}
+.season-now-desc {
+  font-size: 15.5px; color: var(--soft);
+  font-style: italic; line-height: 1.75;
+  max-width: 460px; margin: 0 auto;
+}
+
+/* ── SEC HEADING ── */
+.sec-tag {
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 0.4em; color: var(--green);
+  text-transform: uppercase; display: block;
+  margin-bottom: 6px; opacity: 0.7;
+}
+.sec-title {
+  font-style: italic; font-size: 24px;
+  color: var(--parch); margin-bottom: 20px; font-weight: 400;
+}
+
+/* ── SABBAT CARDS ── */
+.sabbat-list { display: grid; gap: 3px; margin: 24px 0; }
+
+.sabbat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--sabbat-color, var(--green));
+  padding: 22px 24px;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.sabbat-card:hover, .sabbat-card.open {
+  background: rgba(106,152,112,0.04);
+}
+.sabbat-card.current {
+  border-color: var(--sabbat-color, var(--green));
+  background: rgba(106,152,112,0.04);
+}
+
+.sabbat-header {
+  display: flex; align-items: center; gap: 14px;
+}
+.sabbat-glyph { font-size: 26px; flex-shrink: 0; }
+.sabbat-info { flex: 1; }
+.sabbat-name {
+  font-style: italic; font-size: 18px;
+  color: var(--parch); display: block; margin-bottom: 2px;
+}
+.sabbat-date {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--sabbat-color, var(--green)); opacity: 0.7;
+}
+.sabbat-toggle {
+  color: var(--sabbat-color, var(--green));
+  opacity: 0.4; font-size: 16px;
+  transition: transform 0.3s, opacity 0.3s; flex-shrink: 0;
+}
+.sabbat-card.open .sabbat-toggle { transform: rotate(180deg); opacity: 0.8; }
+
+.sabbat-body {
+  display: none; padding-top: 16px; margin-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.sabbat-card.open .sabbat-body { display: block; }
+
+.sabbat-body p {
+  font-size: 15.5px; color: var(--soft);
+  line-height: 1.75; margin-bottom: 12px;
+}
+.sabbat-body em { color: var(--gold2); }
+.sabbat-body strong { color: var(--parch); font-weight: 500; }
+
+.sabbat-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-top: 14px;
+}
+.sabbat-item-label {
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--sabbat-color, var(--green)); opacity: 0.7;
+  display: block; margin-bottom: 4px;
+}
+.sabbat-item-val {
+  font-size: 14px; color: var(--muted);
+  font-style: italic; line-height: 1.55;
+}
+
+.sabbat-shadow {
+  margin-top: 14px; padding: 12px 16px;
+  background: rgba(0,0,0,0.2);
+  border-left: 2px solid var(--sabbat-color, var(--green));
+  font-size: 14px; color: var(--muted);
+  font-style: italic; line-height: 1.65;
+}
+.sabbat-shadow::before {
+  content: 'Shadow question — ';
+  font-family: 'Cinzel', serif; font-size: 8px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--sabbat-color, var(--green)); opacity: 0.7;
+  font-style: normal;
+}
+
+/* ── HEDGE NOTES ── */
+.hedge-note {
+  background: var(--surface);
+  border: 1px solid var(--border-green);
+  padding: 28px; margin: 28px 0; position: relative;
+}
+.hedge-note::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(to right, transparent, rgba(122,184,200,0.4), transparent);
+}
+.hedge-note h3 {
+  font-style: italic; font-size: 20px;
+  color: #7ab8c8; margin-bottom: 14px; font-weight: 400;
+}
+.hedge-note p {
+  font-size: 15.5px; color: var(--soft);
+  line-height: 1.8; margin-bottom: 10px;
+}
+.hedge-note p:last-child { margin-bottom: 0; }
+.hedge-note em { color: var(--gold2); }
+.hedge-note strong { color: var(--parch); font-weight: 500; }
+
+/* ── FOOTER ── */
+.page-footer {
+  text-align: center; padding: 40px 0 0;
+  border-top: 1px solid var(--border);
+}
+.page-footer p { font-size: 13px; color: var(--muted); font-style: italic; }
+.page-footer a { color: var(--green); text-decoration: none; opacity: 0.7; }
+.page-footer a:hover { opacity: 1; }
+
+@media (max-width: 480px) {
+  .wrap { padding: 0 20px 80px; }
+  .sabbat-grid { grid-template-columns: 1fr; }
+  .season-now { padding: 22px 18px 20px; }
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrap">
+
+  <a class="back" href="index.html">← The Hedge</a>
+
+  <header>
+    <span class="header-glyph">☸</span>
+    <span class="page-tag">The Hedge · Grimoire</span>
+    <h1>The Wheel</h1>
+    <div class="header-sub">eight sabbats · the turning year</div>
+  </header>
+
+  <div class="divider"><span>·</span></div>
+
+  <div class="opening">
+    <p>The Wheel does not stop turning<br>
+    because you are not paying attention.</p>
+    <p>But when you turn with it —<br>
+    <em>intentionally, seasonally, in your body</em> —<br>
+    you stop fighting the current<br>
+    and begin to move with it.</p>
+  </div>
+
+  <!-- CURRENT SEASON -->
+  <div class="season-now">
+    <span class="season-now-label">Where the Wheel stands now</span>
+    <span class="season-now-glyph" id="currentGlyph">🌿</span>
+    <span class="season-now-name" id="currentName">—</span>
+    <span class="season-now-date" id="currentDate">—</span>
+    <p class="season-now-desc" id="currentDesc">—</p>
+  </div>
+
+  <div class="divider"><span>✦</span></div>
+
+  <!-- ALL EIGHT -->
+  <span class="sec-tag">The eight sabbats</span>
+  <h2 class="sec-title">The Turning Year</h2>
+  <p style="font-size:16px; color:var(--muted); font-style:italic; margin-bottom:20px;">Tap any sabbat to open it fully.</p>
+
+  <div class="sabbat-list" id="sabbatList"></div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- HEDGE NOTES -->
+  <div class="hedge-note">
+    <h3>The Wheel & the Hedge Witch</h3>
+    <p>For the hedge witch, the Wheel is not a decorative framework. It is a <em>map of when the veil is thinnest</em> — and therefore when crossing is easiest, most potent, or most dangerous.</p>
+    <p><strong>Beltane and Samhain</strong> are the two great threshold festivals. The veil is thinnest at both. Hedge riding done at Beltane tends toward the Fae, the wild, the erotic and creative energies. Riding done at Samhain moves toward the ancestors, the dead, and the deeper shadow.</p>
+    <p><strong>The solstices and equinoxes</strong> are points of astronomical balance — moments when the world literally pauses at a threshold before turning. These are powerful times for any practice that works with liminality.</p>
+    <p><strong>The cross-quarter days</strong> (Imbolc, Beltane, Lughnasadh, Samhain) are the points between — the moments of transition from one season to another. They are liminal by nature. The hedge witch feels them in the body before the calendar marks them.</p>
+    <p>You don't need elaborate ritual for every sabbat. <em>Acknowledgment is enough.</em> A candle. A few written words. A moment outside in the weather that belongs to that turning. The Wheel knows when you are paying attention.</p>
+  </div>
+
+  <div class="divider"><span>☽</span></div>
+
+  <div style="text-align:center; padding: 20px 0 40px;">
+    <p style="font-style:italic; font-size:17px; color:var(--muted); max-width:420px; margin:0 auto; line-height:1.9;">
+      "To everything there is a season,<br>and a time for every purpose under heaven."
+    </p>
+    <p style="font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.2em; color:var(--green); opacity:0.6; margin-top:8px;">— Ecclesiastes</p>
+  </div>
+
+  <div class="page-footer">
+    <p>☽ ✦ ☾</p>
+    <p style="margin-top: 8px;"><a href="index.html">← Return to The Hedge</a></p>
+  </div>
+
+</div>
+
+<script>
+const SABBATS = [
+  {
+    name: "Yule",
+    date: "December 21",
+    month: 11, day: 21,
+    glyph: "🕯️",
+    color: "#7ab8c8",
+    season: "Winter Solstice · Midwinter",
+    desc: "The longest night. The year's darkest point. And yet — this is also the moment the light is reborn. The God dies and is reborn at Yule. The sun, which has been retreating since Litha, begins its return. Sit with the dark before lighting anything.",
+    hedge: "The veil between the living and the dead is quiet but thin at midwinter. Ancestor work and remembrance belong here. The hedge witch honors what has died in the year — projects, relationships, versions of herself.",
+    magick: "Light in darkness, rebirth, ancestor remembrance, rest and renewal",
+    elements: "Earth, fire, evergreen, the returning sun",
+    herbs: "Frankincense, myrrh, pine, holly, mistletoe",
+    shadow: "What in me needs to die completely before it can be reborn? What am I holding onto past its season?"
+  },
+  {
+    name: "Imbolc",
+    date: "February 1",
+    month: 1, day: 1,
+    glyph: "🔥",
+    color: "#d4ae6a",
+    season: "The First Stirring · Brigid's Day",
+    desc: "The ground is still frozen but something underneath has shifted. Brigid's flame is lit. The first snowdrops push through. Not spring yet — the promise of spring. This is the sabbat of creative seeds, of what wants to be born this year but hasn't yet shown itself.",
+    hedge: "Brigid governs the liminal — she is the goddess of the forge (transformation), poetry (the in-between of meaning), and healing (the threshold of illness and health). This is her day. Ask her what she wants from you this year.",
+    magick: "Creative beginnings, inspiration, purification, new projects, Brigid",
+    elements: "Fire, water, the first light returning",
+    herbs: "Snowdrop, rosemary, basil, angelica, Brigid's herbs",
+    shadow: "What creative work have I been afraid to begin? What excuse have I been using?"
+  },
+  {
+    name: "Ostara",
+    date: "March 21",
+    month: 2, day: 21,
+    glyph: "🐰",
+    color: "#9ac89a",
+    season: "Spring Equinox · The Balance",
+    desc: "Equal light and dark. The world is balanced on a knife's edge before tipping into the growing light. Hares, eggs, the color of early flowers. The Goddess is a young woman — open, curious, unburdened. Plant intentions now: the soil is ready.",
+    hedge: "The equinox is a threshold moment — perfect balance before the shift. Work done at the exact equinox point holds particular power. The hedge witch plants not just seeds in soil but intentions in the subtle world.",
+    magick: "New beginnings, fertility, intention planting, balance, growth",
+    elements: "Air, fresh earth, water, the morning",
+    herbs: "Daffodil, violet, clover, jasmine, rose",
+    shadow: "What old story about myself am I still living in? What would genuinely new growth require me to release?"
+  },
+  {
+    name: "Beltane",
+    date: "May 1",
+    month: 4, day: 1,
+    glyph: "🔥",
+    color: "#c47850",
+    season: "The Great Fire Festival · High Spring",
+    desc: "The veil thins. The Fae walk freely. The God and Goddess unite in the sacred marriage. This is the peak of spring's wild energy — creative, erotic, abundant, untamed. The maypole, the bonfire, the hawthorn in bloom. Do not tame this night into something manageable.",
+    hedge: "The most potent night of the year for hedge riding toward the Fae and wild spirits. The crossing is easier tonight than any other time. But the Otherworld is also wilder, less predictable. Protection matters more, not less.",
+    magick: "Fertility, creativity, passion, Fae work, hedge riding, fire purification",
+    elements: "Fire, earth in full bloom, the wild",
+    herbs: "Hawthorn, rowan, rose, elder flower, meadowsweet",
+    shadow: "Where have I suppressed my own wildness to keep others comfortable? What would it cost me to stop?"
+  },
+  {
+    name: "Litha",
+    date: "June 21",
+    month: 5, day: 21,
+    glyph: "☀️",
+    color: "#d4ae6a",
+    season: "Summer Solstice · Midsummer",
+    desc: "The peak of light. The longest day. The God in full power — radiant, potent, at his height. And yet — after tonight, the light begins to wane. Litha is both the peak and the turning. Celebrate what is at its fullest, and begin to acknowledge what must eventually be released.",
+    hedge: "Midsummer is a time of great visibility — not just of the sun, but of what has been built. The hedge witch takes stock at Litha: what has grown from the Imbolc seeds? What needs more tending? What can now be harvested?",
+    magick: "Sun magic, full power, abundance, visibility, love, protection",
+    elements: "Fire, full bloom earth, the noon sun",
+    herbs: "St John's Wort, lavender, chamomile, rose, sunflower",
+    shadow: "What am I afraid to be seen in? Where am I hiding my full power?"
+  },
+  {
+    name: "Lughnasadh",
+    date: "August 1",
+    month: 7, day: 1,
+    glyph: "🌾",
+    color: "#b8923a",
+    season: "First Harvest · Lugh's Day",
+    desc: "The first harvest. The grain is cut. What you planted in spring and tended through summer can now be gathered — or acknowledged as not having grown the way you hoped. Both are harvest. Lughnasadh asks: what arrived? What did you receive? What do you owe gratitude for?",
+    hedge: "Lugh is a master craftsman — he understands the gap between skill and intention, between what we tried to make and what actually emerged. The hedge witch is honest at Lughnasadh: not performing gratitude, but genuinely reckoning with what grew.",
+    magick: "First harvest, gratitude, skill and craft, acknowledging what grew",
+    elements: "Earth, late summer sun, grain, the first amber",
+    herbs: "Wheat, corn, blackberry, sunflower, goldenrod",
+    shadow: "What did I plant this year that didn't grow? Can I be honest about why?"
+  },
+  {
+    name: "Mabon",
+    date: "September 21",
+    month: 8, day: 21,
+    glyph: "🍂",
+    color: "#c47850",
+    season: "Autumn Equinox · Second Harvest",
+    desc: "Balance again — but this time tipping toward darkness. The harvest is complete. The days grow shorter. The ancestors draw nearer. Mabon is the sabbat of reckoning and gratitude, of releasing what was not completed, and of preparing to enter the dark half of the year.",
+    hedge: "The thin time begins at Mabon. The hedge witch begins to prepare for Samhain — reviewing the year's spiritual work, honoring what has been learned, making space for what the dark season will bring.",
+    magick: "Second harvest, balance, release, ancestor work begins, preparation",
+    elements: "Earth in decline, water, wind, autumn fire",
+    herbs: "Apple, rosemary, rue, hawthorn berry, sage",
+    shadow: "What is the honest reckoning of this year? What did I learn? What do I still need to face?"
+  },
+  {
+    name: "Samhain",
+    date: "October 31",
+    month: 9, day: 31,
+    glyph: "🌑",
+    color: "#b8a8d8",
+    season: "The Veil's Thinning · The Year's End",
+    desc: "The veil is at its thinnest. The ancestors walk. The year ends and the new year begins in darkness. This is the Crone's night — the night of death, transformation, and the deep wisdom that only comes from having faced what cannot be avoided. The most sacred night of the Wiccan year.",
+    hedge: "The most powerful night for hedge riding, spirit communication, and ancestor work. The crossing is almost effortless tonight. But preparation matters most on this night of all nights — the Otherworld is very close and very present. Do the LBRP. Set your intention. Know your return.",
+    magick: "Ancestor work, spirit communication, hedge riding, death and rebirth, divination",
+    elements: "All elements, the void, the bone-deep dark",
+    herbs: "Mugwort, wormwood, dumb cane, apple, blackthorn",
+    shadow: "What do I need to face before I can begin again? What do the ancestors want me to know?"
+  },
+];
+
+// ── FIND CURRENT SABBAT ───────────────────────────────────
+function getCurrentSabbat() {
+  const now = new Date();
+  const m = now.getMonth(); // 0-11
+  const d = now.getDate();
+
+  // Find the upcoming or current sabbat
+  for (let i = 0; i < SABBATS.length; i++) {
+    const s = SABBATS[i];
+    const sMonth = s.month;
+    const sDay = s.day;
+    // Check if we're within 13 days after the sabbat (so it shows as current)
+    const sabbatDate = new Date(now.getFullYear(), sMonth, sDay);
+    const diff = (now - sabbatDate) / (1000 * 60 * 60 * 24);
+    if (diff >= 0 && diff <= 46) return i;
+  }
+  // Fallback to Yule
+  return 0;
+}
+
+const currentIdx = getCurrentSabbat();
+const cur = SABBATS[currentIdx];
+
+document.getElementById('currentGlyph').textContent = cur.glyph;
+document.getElementById('currentName').textContent = cur.name;
+document.getElementById('currentDate').textContent = cur.season;
+document.getElementById('currentDesc').textContent = cur.desc.split('.')[0] + '.';
+
+// ── RENDER SABBAT LIST ────────────────────────────────────
+const list = document.getElementById('sabbatList');
+SABBATS.forEach((s, i) => {
+  const isCurrentSabbat = i === currentIdx;
+  const card = document.createElement('div');
+  card.className = 'sabbat-card' + (isCurrentSabbat ? ' open current' : '');
+  card.style.setProperty('--sabbat-color', s.color);
+  card.innerHTML = `
+    <div class="sabbat-header">
+      <span class="sabbat-glyph">${s.glyph}</span>
+      <div class="sabbat-info">
+        <span class="sabbat-name">${s.name}${isCurrentSabbat ? ' <span style="font-size:10px;font-family:Cinzel,serif;letter-spacing:0.15em;font-style:normal;opacity:0.7;">· NOW</span>' : ''}</span>
+        <span class="sabbat-date">${s.date}  ·  ${s.season}</span>
+      </div>
+      <span class="sabbat-toggle">▾</span>
+    </div>
+    <div class="sabbat-body">
+      <p>${s.desc}</p>
+      <p style="color:rgba(122,184,200,0.85);"><span style="font-family:Cinzel,serif;font-size:8.5px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.7;">Hedge work — </span>${s.hedge}</p>
+      <div class="sabbat-grid">
+        <div>
+          <span class="sabbat-item-label">Magick</span>
+          <span class="sabbat-item-val">${s.magick}</span>
+        </div>
+        <div>
+          <span class="sabbat-item-label">Elements</span>
+          <span class="sabbat-item-val">${s.elements}</span>
+        </div>
+        <div>
+          <span class="sabbat-item-label">Herbs & allies</span>
+          <span class="sabbat-item-val">${s.herbs}</span>
+        </div>
+      </div>
+      <div class="sabbat-shadow">${s.shadow}</div>
+    </div>
+  `;
+  card.addEventListener('click', () => card.classList.toggle('open'));
+  list.appendChild(card);
+});
+</script>
+</body>
+</html>
