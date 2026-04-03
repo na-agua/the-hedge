@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Practice · The Hedge</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cinzel:wght@400;500&display=swap');
+
+:root {
+  --night: #07060d;
+  --gold: #b8923a;
+  --gold2: #d4ae6a;
+  --parch: #e8e0d0;
+  --muted: #6a6058;
+  --soft: #a09080;
+  --border: rgba(184,146,58,0.12);
+  --surface: rgba(255,255,255,0.02);
+
+  /* Time of day colors */
+  --morning: #d4a843;
+  --morning-dim: rgba(212,168,67,0.12);
+  --midday: #c87850;
+  --midday-dim: rgba(200,120,80,0.1);
+  --evening: #7858b8;
+  --evening-dim: rgba(120,88,184,0.1);
+
+  /* Levels */
+  --min-color: #8a8878;
+  --good-color: #b8923a;
+  --ideal-color: #c8b0e8;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--night);
+  color: var(--parch);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.85;
+  overflow-x: hidden;
+}
+
+body::before {
+  content:''; position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(212,168,67,0.04) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 80%, rgba(120,88,184,0.04) 0%, transparent 55%);
+  pointer-events:none; z-index:0;
+}
+
+.stars {
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 38%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 6%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 58% 28%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 74% 55%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 88% 14%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 94% 68%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 14% 78%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 46% 88%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 76% 92%, rgba(255,255,255,0.25) 0%, transparent 100%);
+}
+
+.wrap {
+  position:relative; z-index:1;
+  max-width:700px; margin:0 auto;
+  padding:0 24px 120px;
+}
+
+.back {
+  display:inline-block; padding:20px 0 0;
+  font-family:'Cinzel',serif; font-size:9px;
+  letter-spacing:0.3em; color:var(--muted);
+  text-decoration:none; text-transform:uppercase; transition:color 0.2s;
+}
+.back:hover { color:var(--gold2); }
+
+/* ── HEADER ── */
+header { text-align:center; padding:52px 0 44px; }
+
+.page-tag {
+  font-family:'Cinzel',serif; font-size:9px;
+  letter-spacing:0.45em; color:var(--gold);
+  text-transform:uppercase; opacity:0.6;
+  display:block; margin-bottom:10px;
+}
+
+h1 {
+  font-family:'Cinzel',serif;
+  font-size:clamp(22px,5vw,34px);
+  font-weight:400; color:var(--gold2);
+  letter-spacing:0.1em; margin-bottom:8px;
+}
+
+.header-sub {
+  font-style:italic; font-size:15px;
+  color:var(--muted); margin-bottom:28px;
+}
+
+/* TODAY STRIP */
+.today-strip {
+  display:flex; justify-content:center;
+  gap:20px; flex-wrap:wrap;
+  padding:16px 20px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  margin-bottom:0;
+}
+.today-item { text-align:center; }
+.today-item-label {
+  font-family:'Cinzel',serif; font-size:8px;
+  letter-spacing:0.3em; text-transform:uppercase;
+  color:var(--gold); opacity:0.6; display:block; margin-bottom:3px;
+}
+.today-item-val {
+  font-style:italic; font-size:15px; color:var(--parch);
+}
+
+/* ── DIVIDER ── */
+.divider {
+  display:flex; align-items:center; gap:16px;
+  margin:36px 0 28px; opacity:0.25;
+}
+.divider::before,.divider::after {
+  content:''; flex:1; height:1px;
+  background:linear-gradient(to right,transparent,var(--gold),transparent);
+}
+.divider span { color:var(--gold); font-size:13px; }
+
+/* ── LEVEL TABS ── */
+.level-tabs {
+  display:flex; gap:3px; margin-bottom:3px;
+}
+.level-tab {
+  flex:1; padding:10px 8px;
+  font-family:'Cinzel',serif; font-size:9px;
+  letter-spacing:0.2em; text-transform:uppercase;
+  background:var(--surface); border:1px solid var(--border);
+  color:var(--muted); cursor:pointer; text-align:center;
+  transition:all 0.2s;
+}
+.level-tab.min.active { background:rgba(138,136,120,0.12); border-color:var(--min-color); color:var(--min-color); }
+.level-tab.good.active { background:rgba(184,146,58,0.12); border-color:var(--good-color); color:var(--good-color); }
+.level-tab.ideal.active { background:rgba(200,176,232,0.1); border-color:var(--ideal-color); color:var(--ideal-color); }
+.level-tab:hover { opacity:0.8; }
+
+/* ── TIME BLOCKS ── */
+.time-block {
+  margin-bottom:4px;
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+
+.time-block.morning { border-color:rgba(212,168,67,0.2); }
+.time-block.midday  { border-color:rgba(200,120,80,0.2); }
+.time-block.evening { border-color:rgba(120,88,184,0.2); }
+
+/* Image banner */
+.time-image {
+  width:100%; height:160px;
+  object-fit:cover; display:block;
+  filter:brightness(0.45) saturate(0.8);
+  position:relative;
+}
+
+.time-header {
+  padding:20px 24px 16px;
+  display:flex; align-items:center; gap:14px;
+  position:relative;
+}
+
+.morning .time-header { background:var(--morning-dim); }
+.midday  .time-header { background:var(--midday-dim); }
+.evening .time-header { background:var(--evening-dim); }
+
+.time-glyph { font-size:28px; flex-shrink:0; }
+
+.time-info { flex:1; }
+.time-name {
+  font-family:'Cinzel',serif; font-size:13px;
+  letter-spacing:0.2em; text-transform:uppercase;
+  display:block; margin-bottom:3px;
+}
+.morning .time-name { color:var(--morning); }
+.midday  .time-name { color:var(--midday); }
+.evening .time-name { color:var(--evening); }
+
+.time-duration {
+  font-style:italic; font-size:13px; color:var(--muted);
+}
+
+/* Level content */
+.level-content { display:none; padding:0 24px 24px; }
+.level-content.active { display:block; }
+
+.level-badge {
+  display:inline-block;
+  font-family:'Cinzel',serif; font-size:8px;
+  letter-spacing:0.25em; text-transform:uppercase;
+  padding:4px 10px; margin-bottom:16px; margin-top:16px;
+  border:1px solid currentColor;
+}
+.level-badge.min   { color:var(--min-color); }
+.level-badge.good  { color:var(--good-color); }
+.level-badge.ideal { color:var(--ideal-color); }
+
+/* Steps */
+.steps { list-style:none; }
+.step {
+  display:grid;
+  grid-template-columns:28px 1fr;
+  gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  align-items:start;
+}
+.step:last-child { border-bottom:none; }
+
+.step-num {
+  font-family:'Cinzel',serif; font-size:10px;
+  color:var(--gold); opacity:0.6;
+  width:24px; height:24px;
+  border:1px solid rgba(184,146,58,0.2);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; margin-top:2px;
+}
+
+.step-body {}
+.step-title {
+  font-style:italic; font-size:16px;
+  color:var(--parch); display:block; margin-bottom:3px;
+}
+.step-time {
+  font-family:'Cinzel',serif; font-size:8px;
+  letter-spacing:0.2em; color:var(--gold);
+  opacity:0.6; display:block; margin-bottom:4px;
+}
+.step-desc {
+  font-size:14.5px; color:var(--soft); line-height:1.7;
+}
+.step-desc em { color:var(--gold2); }
+.step-desc strong { color:var(--parch); font-weight:500; }
+
+/* ── MICRODOSING ── */
+.micro-section {
+  margin-top:40px;
+  border:1px solid rgba(120,88,184,0.2);
+  overflow:hidden;
+}
+
+.micro-header {
+  padding:20px 24px 16px;
+  background:rgba(120,88,184,0.06);
+  border-bottom:1px solid rgba(120,88,184,0.15);
+}
+
+.micro-title {
+  font-family:'Cinzel',serif; font-size:11px;
+  letter-spacing:0.3em; text-transform:uppercase;
+  color:var(--ideal-color); margin-bottom:6px; display:block;
+}
+
+.micro-sub {
+  font-style:italic; font-size:14px; color:var(--muted);
+}
+
+.micro-body { padding:20px 24px; }
+
+.micro-phase {
+  display:grid; grid-template-columns:80px 1fr;
+  gap:12px; padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  align-items:start;
+}
+.micro-phase:last-child { border-bottom:none; }
+
+.micro-moon {
+  font-size:18px; text-align:center;
+  padding-top:2px;
+}
+.micro-moon-name {
+  font-family:'Cinzel',serif; font-size:8px;
+  letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--ideal-color); opacity:0.7;
+  display:block; margin-top:3px; text-align:center;
+}
+
+.micro-text { font-size:15px; color:var(--soft); line-height:1.7; }
+.micro-text em { color:var(--gold2); }
+.micro-text strong { color:var(--parch); font-weight:500; }
+
+/* ── GUIDELINES ── */
+.guidelines {
+  margin-top:4px;
+  border:1px solid var(--border);
+  padding:24px;
+  background:var(--surface);
+}
+.guidelines h4 {
+  font-family:'Cinzel',serif; font-size:9px;
+  letter-spacing:0.3em; text-transform:uppercase;
+  color:var(--gold); opacity:0.8; margin-bottom:16px;
+}
+.guideline {
+  display:flex; gap:12px; margin-bottom:12px;
+  font-size:15px; color:var(--soft); line-height:1.7;
+  align-items:flex-start;
+}
+.guideline:last-child { margin-bottom:0; }
+.guideline-dot {
+  color:var(--gold); opacity:0.5; flex-shrink:0;
+  padding-top:2px;
+}
+.guideline em { color:var(--gold2); }
+.guideline strong { color:var(--parch); font-weight:500; }
+
+/* ── MOON GUIDANCE ── */
+.moon-guidance {
+  margin-top:36px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  padding:24px;
+  position:relative;
+}
+.moon-guidance::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1.5px;
+  background:linear-gradient(to right,transparent,var(--gold),transparent); opacity:0.3;
+}
+.moon-guidance h4 {
+  font-family:'Cinzel',serif; font-size:9px;
+  letter-spacing:0.3em; text-transform:uppercase;
+  color:var(--gold); opacity:0.8; margin-bottom:16px;
+}
+.moon-row {
+  display:grid; grid-template-columns:32px 100px 1fr;
+  gap:10px; padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:15px; align-items:center;
+}
+.moon-row:last-child { border-bottom:none; }
+.moon-row-glyph { font-size:18px; text-align:center; }
+.moon-row-name {
+  font-family:'Cinzel',serif; font-size:8.5px;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--gold2); opacity:0.7;
+}
+.moon-row-guidance { color:var(--soft); font-style:italic; }
+
+/* ── FOOTER ── */
+.page-footer {
+  text-align:center; padding:40px 0 0;
+  border-top:1px solid var(--border); margin-top:48px;
+}
+.page-footer p { font-size:13px; color:var(--muted); font-style:italic; }
+.page-footer a { color:var(--gold); text-decoration:none; opacity:0.7; }
+.page-footer a:hover { opacity:1; }
+
+@media(max-width:480px) {
+  .wrap { padding:0 16px 80px; }
+  .time-image { height:120px; }
+  .micro-phase { grid-template-columns:60px 1fr; }
+  .moon-row { grid-template-columns:28px 80px 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrap">
+
+  <a class="back" href="index.html">← The Hedge</a>
+
+  <header>
+    <span class="page-tag">The Hedge · Daily Practice</span>
+    <h1>The Daily Practice</h1>
+    <div class="header-sub">three anchors · three levels · every day</div>
+
+    <div class="today-strip">
+      <div class="today-item">
+        <span class="today-item-label">Today</span>
+        <span class="today-item-val" id="todayDate">—</span>
+      </div>
+      <div class="today-item">
+        <span class="today-item-label">Moon</span>
+        <span class="today-item-val" id="todayMoon">—</span>
+      </div>
+      <div class="today-item">
+        <span class="today-item-label">Moon Phase</span>
+        <span class="today-item-val" id="todayPhase">—</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- LEVEL SELECTOR -->
+  <div class="level-tabs">
+    <div class="level-tab min active" onclick="setLevel('min', this)">Minimum</div>
+    <div class="level-tab good" onclick="setLevel('good', this)">Good</div>
+    <div class="level-tab ideal" onclick="setLevel('ideal', this)">Ideal</div>
+  </div>
+
+  <!-- ── MORNING ── -->
+  <div class="time-block morning">
+    <img class="time-image"
+      src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=60"
+      alt="misty mountain dawn"
+      onerror="this.style.display='none'">
+    <div class="time-header">
+      <span class="time-glyph">🌅</span>
+      <div class="time-info">
+        <span class="time-name">Morning</span>
+        <span class="time-duration" id="morning-duration">15 min</span>
+      </div>
+    </div>
+
+    <!-- MINIMUM -->
+    <div class="level-content min active">
+      <span class="level-badge min">Minimum · 15 min</span>
+      <ol class="steps">
+        <li class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <span class="step-title">Land</span>
+            <span class="step-time">1 min</span>
+            <div class="step-desc">Feet on the floor. Name the moon phase and your cycle phase aloud. One slow breath. <em>You are here, in this body, on this Earth.</em></div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <span class="step-title">Anapana</span>
+            <span class="step-time">10 min</span>
+            <div class="step-desc">Breath at the nostrils. Nothing else. When the mind wanders, return without judgment. <em>This is enough. Showing up matters more than depth.</em></div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <span class="step-title">One intention aloud</span>
+            <span class="step-time">1 min</span>
+            <div class="step-desc">One sentence. A quality of being, not a to-do. <em>"Today I move at the pace of what I am carrying."</em></div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <span class="step-title">Pachamama breath</span>
+            <span class="step-time">3 min</span>
+            <div class="step-desc">Breathe at her pace. Slower than feels comfortable. Feel the ground beneath you holding your weight. <em>She is already here.</em></div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- GOOD -->
+    <div class="level-content good">
+      <span class="level-badge good">Good · 35 min</span>
+      <ol class="steps">
+        <li class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <span class="step-title">Land</span>
+            <span class="step-time">2 min</span>
+            <div class="step-desc">Feet on floor. Moon phase, cycle phase, one breath. Set the space with intention before anything else.</div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <span class="step-title">LBRP</span>
+            <span class="step-time">10 min</span>
+            <div class="step-desc">Lesser Banishing Ritual of the Pentagram. Every day without exception. <em>This is not optional on a Good day.</em> Clears the space, aligns the self, protects what you carry into the world.</div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <span class="step-title">Middle Pillar</span>
+            <span class="step-time">5 min</span>
+            <div class="step-desc">Build the column of light through the body from crown to earth. <strong>This travels with you</strong> — unlike the LBRP which protects the space, the Middle Pillar protects the person.</div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <span class="step-title">Anapana into open awareness</span>
+            <span class="step-time">15 min</span>
+            <div class="step-desc">Begin at the nostrils (Anapana) for 10 minutes, then release the anchor and rest in open awareness for 5. <em>Let the mind be sky, not wall.</em></div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <span class="step-title">Intention aligned to the moon</span>
+            <span class="step-time">3 min</span>
+            <div class="step-desc">One sentence that responds to today's moon phase energy. See the moon guidance below. Speak it aloud. Let your voice carry it.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- IDEAL -->
+    <div class="level-content ideal">
+      <span class="level-badge ideal">Ideal · 60 min</span>
+      <ol class="steps">
+        <li class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <span class="step-title">Land</span>
+            <span class="step-time">2 min</span>
+            <div class="step-desc">Full landing. Moon, cycle, body, breath. Feel the weight of the day ahead with equanimity.</div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <span class="step-title">LBRP</span>
+            <span class="step-time">10 min</span>
+            <div class="step-desc">Full and deliberate. Feel the directions. Feel the archangels. Let the ritual say: <em>I am here, in this body, in this world, protected and clear.</em></div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <span class="step-title">Middle Pillar</span>
+            <span class="step-time">5 min</span>
+            <div class="step-desc">Build slowly. Linger at each center. Let the light descend all the way into the earth beneath your feet.</div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <span class="step-title">Pranayama — alternate nostril</span>
+            <span class="step-time">8 min</span>
+            <div class="step-desc">4 rounds of Nadi Shodhana. Balances the hemispheres, prepares the body for deep sitting. <em>Left nostril first — lunar, receiving.</em></div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <span class="step-title">Vipassana body scan</span>
+            <span class="step-time">25 min</span>
+            <div class="step-desc">Crown to feet, feet to crown. Equanimity with all sensations — pleasant and unpleasant equally. <strong>This is the core of the Ideal morning.</strong> Everything else prepares for this.</div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <span class="step-title">Metta</span>
+            <span class="step-time">8 min</span>
+            <div class="step-desc">Self first — always self first. Then those you love. Then neutral beings. Then difficult ones. Then all beings on Earth. <em>Then all universal beings. You know how far this can go.</em></div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">7</div>
+          <div class="step-body">
+            <span class="step-title">Intention + Pachamama</span>
+            <span class="step-time">2 min</span>
+            <div class="step-desc">State your intention. Then sit one minute at her pace. Let her confirm it or quietly correct it.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ── MIDDAY ── -->
+  <div class="time-block midday" style="margin-top:4px;">
+    <img class="time-image"
+      src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=800&q=60"
+      alt="sunlight through trees"
+      onerror="this.style.display='none'">
+    <div class="time-header">
+      <span class="time-glyph">☀️</span>
+      <div class="time-info">
+        <span class="time-name">Midday</span>
+        <span class="time-duration" id="midday-duration">2 min</span>
+      </div>
+    </div>
+
+    <div class="level-content min active">
+      <span class="level-badge min">Minimum · 2 min</span>
+      <ol class="steps">
+        <li class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <span class="step-title">Stop</span>
+            <span class="step-time">2 min</span>
+            <div class="step-desc">Three conscious breaths. One question asked honestly: <em>am I still in my body?</em> That's all. Return to what you were doing.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="level-content good">
+      <span class="level-badge good">Good · 10 min</span>
+      <ol class="steps">
+        <li class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <span class="step-title">Anapana sit</span>
+            <span class="step-time">7 min</span>
+            <div class="step-desc">A proper pause in the middle of the day. Breath at the nostrils. Let the morning settle. <em>The midday sit catches what the morning missed.</em></div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <span class="step-title">Realignment</span>
+            <span class="step-time">3 min</span>
+            <div class="step-desc">Check the moon phase energy. Ask: am I still living from my morning intention, or did I lose it somewhere around 10am? One sentence to reorient.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="level-content ideal">
+      <span class="level-badge ideal">Ideal · 20 min</span>
+      <ol class="steps">
+        <li class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <span class="step-title">Yoga nidra</span>
+            <span class="step-time">15 min</span>
+            <div class="step-desc">Lying down. Full body relaxation. Set a Sankalpa — a seed intention — at the beginning and end. <em>The midday nidra is one of the most restorative practices available.</em> 15 minutes equals 2 hours of sleep in nervous system benefit.</div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <span class="step-title">Intention check + Metta pulse</span>
+            <span class="step-time">5 min</span>
+            <div class="step-desc">Brief loving-kindness for whoever you have encountered this morning. Not elaborate — one breath of goodwill per person. <em>This is the curandera's midday practice: send what you have received forward.</em></div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ── EVENING ── -->
+  <div class="time-block evening" style="margin-top:4px;">
+    <img class="time-image"
+      src="https://images.unsplash.com/photo-1518136247453-74e7b5265980?w=800&q=60"
+      alt="candle flame in darkness"
+      onerror="this.style.display='none'">
+    <div class="time-header">
+      <span class="time-glyph">🕯️</span>
+      <div class="time-info">
+        <span class="time-name">Evening</span>
+        <span class="time-duration" id="evening-duration">10 min</span>
+      </div>
+    </div>
+
+    <div class="level-content min active">
+      <span class="level-badge min">Minimum · 10 min</span>
+      <ol class="steps">
+        <li class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <span class="step-title">Three sentences</span>
+            <span class="step-time">3 min</span>
+            <div class="step-desc">What happened today — outer and inner. Three sentences only. <em>Not a journal. A witness statement.</em></div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <span class="step-title">Release</span>
+            <span class="step-time">2 min</span>
+            <div class="step-desc">Name one thing you are putting down before sleep. Say it aloud. One exhale. Let it go physically — a gesture, a breath, a relaxing of the hands.</div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <span class="step-title">Trataka</span>
+            <span class="step-time">5 min</span>
+            <div class="step-desc">Candle flame. Soft gaze. Let the day dissolve into the light. <em>Don't blink until the eyes water naturally.</em> Then close them and hold the after-image.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="level-content good">
+      <span class="level-badge good">Good · 25 min</span>
+      <ol class="steps">
+        <li class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <span class="step-title">Vipassana body scan</span>
+            <span class="step-time">15 min</span>
+            <div class="step-desc">Where did the day land in the body? Scan slowly. Notice what is held, what is tight, what is unresolved. <em>The body keeps the score of the day.</em> This practice reads it honestly.</div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <span class="step-title">Shadow check</span>
+            <span class="step-time">5 min</span>
+            <div class="step-desc">What triggered me today? What was the hidden gift in it? One minute per question. <strong>No bypassing.</strong> The shadow named at night does not visit in dreams uninvited.</div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <span class="step-title">Dream invitation to Pachamama</span>
+            <span class="step-time">3 min</span>
+            <div class="step-desc">Before sleep, ask her to sit with you in the dream space. Set one question for the night. <em>The dreaming hedge witch asks before she crosses.</em></div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <span class="step-title">Three gratitudes</span>
+            <span class="step-time">2 min</span>
+            <div class="step-desc">Specific. Not "I am grateful for my health" but "I am grateful for the warmth of the cup in my hands this morning." Specificity is what makes gratitude land.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="level-content ideal">
+      <span class="level-badge ideal">Ideal · 45 min</span>
+      <ol class="steps">
+        <li class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <span class="step-title">Pranayama or holotropic breathwork</span>
+            <span class="step-time">15 min</span>
+            <div class="step-desc">Choose based on what the day needs to discharge. Pranayama for balance and clarity. Holotropic for deeper emotional release. <em>Let the breath do what the mind cannot.</em></div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <span class="step-title">Full Vipassana sit</span>
+            <span class="step-time">20 min</span>
+            <div class="step-desc">Complete body scan, crown to feet and back. Full equanimity practice. <strong>This is the evening's core.</strong> The day is digested here, in the body, not in the mind.</div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <span class="step-title">Shadow journal</span>
+            <span class="step-time">5 min</span>
+            <div class="step-desc">One page. What arose today that needs witnessing. No fixing. <em>Write it and close the notebook.</em> The act of writing is the release.</div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <span class="step-title">Dream intention + hedge riding invitation</span>
+            <span class="step-time">3 min</span>
+            <div class="step-desc">If the veil feels thin — waning moon, dark moon, Samhain season — invite a conscious crossing in the dream space. Set your intention. Ask Pachamama to accompany you. <em>The hedge witch who has prepared can ride in sleep.</em></div>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <span class="step-title">Three gratitudes spoken aloud</span>
+            <span class="step-time">2 min</span>
+            <div class="step-desc">To the room. To Pachamama. To the day itself. Spoken, not thought. <em>The voice in the physical world carries authority in the spirit world.</em></div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="divider"><span>·</span></div>
+
+  <!-- GUIDELINES -->
+  <div class="guidelines">
+    <h4>Practice Guidelines</h4>
+    <div class="guideline">
+      <span class="guideline-dot">✦</span>
+      <span><strong>Minimum is not failure.</strong> Showing up at minimum every day is infinitely more powerful than doing ideal three times a week. <em>Consistency is the practice.</em></span>
+    </div>
+    <div class="guideline">
+      <span class="guideline-dot">✦</span>
+      <span><strong>The LBRP is non-negotiable on Good and Ideal days.</strong> It is not decoration. It is the foundation that makes everything else safe and effective.</span>
+    </div>
+    <div class="guideline">
+      <span class="guideline-dot">✦</span>
+      <span><strong>Each time of day is independent.</strong> You can do Minimum morning, Ideal midday, Good evening. There is no failing the whole day because one anchor was minimal.</span>
+    </div>
+    <div class="guideline">
+      <span class="guideline-dot">✦</span>
+      <span><strong>The body scan evening practice digests the day.</strong> What you don't process in the body before sleep visits you in dreams — often as shadow, sometimes as message. The scan makes the difference.</span>
+    </div>
+    <div class="guideline">
+      <span class="guideline-dot">✦</span>
+      <span><strong>Pachamama is available at any level.</strong> Even on a Minimum day, her breath is there. <em>She does not require elaborate preparation. She requires slowness.</em></span>
+    </div>
+    <div class="guideline">
+      <span class="guideline-dot">✦</span>
+      <span><strong>Speak aloud.</strong> Intentions, gratitudes, releases — your voice in the physical world carries authority in the spirit world. Do not only think them.</span>
+    </div>
+    <div class="guideline">
+      <span class="guideline-dot">✦</span>
+      <span><strong>Write immediately after dreaming.</strong> Even one sentence before you move. The hedge crosses in sleep — the journal is the harvest.</span>
+    </div>
+  </div>
+
+  <!-- MICRODOSING -->
+  <div class="micro-section">
+    <div class="micro-header">
+      <span class="micro-title">Microdosing · Lunar Protocol</span>
+      <span class="micro-sub">Aligned to the moon cycle, not a fixed schedule</span>
+    </div>
+    <div class="micro-body">
+      <div class="micro-phase">
+        <div><span class="micro-moon">🌑</span><span class="micro-moon-name">New Moon</span></div>
+        <div class="micro-text"><strong>Begin a series.</strong> Plant the intention for this cycle on the first microdose. What is this medicine helping you grow? Name it before you take it. <em>The new moon + medicine combination is potent for setting the direction of an entire cycle.</em></div>
+      </div>
+      <div class="micro-phase">
+        <div><span class="micro-moon">🌒</span><span class="micro-moon-name">Waxing</span></div>
+        <div class="micro-text"><strong>Active days.</strong> Pair with Good or Ideal morning practice. The waxing energy amplifies what is growing — creativity, focus, momentum. <em>Let the medicine serve the intention you planted at the new moon.</em></div>
+      </div>
+      <div class="micro-phase">
+        <div><span class="micro-moon">🌕</span><span class="micro-moon-name">Full Moon</span></div>
+        <div class="micro-text"><strong>Pause the medicine.</strong> Let the peak be natural. The full moon already opens what needs opening — the medicine and the moon together can amplify more than you can integrate. <em>Trust the moon to do its work alone.</em></div>
+      </div>
+      <div class="micro-phase">
+        <div><span class="micro-moon">🌖</span><span class="micro-moon-name">Waning</span></div>
+        <div class="micro-text"><strong>Shadow orientation.</strong> If continuing to microdose, shift the intention toward what needs releasing. What did the full moon illuminate that now needs to go? <em>Waning medicine goes inward, downward, into what is hidden.</em></div>
+      </div>
+      <div class="micro-phase">
+        <div><span class="micro-moon">🌑</span><span class="micro-moon-name">Dark Moon</span></div>
+        <div class="micro-text"><strong>Rest. No medicine.</strong> Let the system empty completely. The dark moon is the fallow time — for the body and the psyche both. <em>What you don't allow to empty cannot fill again cleanly.</em></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOON GUIDANCE -->
+  <div class="moon-guidance">
+    <h4>Today's Moon · Practice Guidance</h4>
+    <div class="moon-row">
+      <div class="moon-row-glyph">🌑</div>
+      <div class="moon-row-name">New Moon</div>
+      <div class="moon-row-guidance">Plant. Set intention before anything else. Morning practice seeds the whole cycle.</div>
+    </div>
+    <div class="moon-row">
+      <div class="moon-row-glyph">🌒</div>
+      <div class="moon-row-name">Waxing Crescent</div>
+      <div class="moon-row-guidance">Declare. Speak your intention aloud in morning practice. Add energy to what is growing.</div>
+    </div>
+    <div class="moon-row">
+      <div class="moon-row-glyph">🌓</div>
+      <div class="moon-row-name">First Quarter</div>
+      <div class="moon-row-guidance">Act. Push through resistance. The Good or Ideal morning practice is most important now.</div>
+    </div>
+    <div class="moon-row">
+      <div class="moon-row-glyph">🌔</div>
+      <div class="moon-row-name">Waxing Gibbous</div>
+      <div class="moon-row-guidance">Refine. Add the midday check-in. What needs adjusting before the full moon?</div>
+    </div>
+    <div class="moon-row">
+      <div class="moon-row-glyph">🌕</div>
+      <div class="moon-row-name">Full Moon</div>
+      <div class="moon-row-guidance">Peak. Do the Ideal practice if possible. Evening body scan is essential tonight — emotions are data.</div>
+    </div>
+    <div class="moon-row">
+      <div class="moon-row-glyph">🌖</div>
+      <div class="moon-row-name">Waning Gibbous</div>
+      <div class="moon-row-guidance">Give thanks. Evening gratitude practice is most potent now. Let abundance flow outward.</div>
+    </div>
+    <div class="moon-row">
+      <div class="moon-row-glyph">🌗</div>
+      <div class="moon-row-name">Last Quarter</div>
+      <div class="moon-row-guidance">Release. Evening shadow journal is most important. What needs to be written and closed?</div>
+    </div>
+    <div class="moon-row">
+      <div class="moon-row-glyph">🌘</div>
+      <div class="moon-row-name">Waning Crescent</div>
+      <div class="moon-row-guidance">Rest. Minimum practice is honoured. Empty before the new moon. Rest is the practice.</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <p>☽ ✦ ☾</p>
+    <p style="margin-top:8px;"><a href="index.html">← Return to The Hedge</a></p>
+  </div>
+
+</div>
+
+<script>
+// ── MOON CALCULATION ──────────────────────────────────────
+function getMoonAge(date) {
+  const knownNewMoon = new Date(Date.UTC(2000, 0, 6, 18, 14, 0));
+  const synodicMonth = 29.53059;
+  const diff = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
+  const cycles = diff / synodicMonth;
+  return (cycles - Math.floor(cycles)) * synodicMonth;
+}
+
+function getMoonInfo(age) {
+  if (age < 1.85)  return { glyph:"🌑", name:"New Moon",        key:"Plant · Intend" };
+  if (age < 7.38)  return { glyph:"🌒", name:"Waxing Crescent", key:"Declare · Commit" };
+  if (age < 9.22)  return { glyph:"🌓", name:"First Quarter",   key:"Act · Push" };
+  if (age < 14.77) return { glyph:"🌔", name:"Waxing Gibbous",  key:"Refine · Align" };
+  if (age < 16.61) return { glyph:"🌕", name:"Full Moon",       key:"Receive · Release" };
+  if (age < 22.15) return { glyph:"🌖", name:"Waning Gibbous",  key:"Gratitude · Give" };
+  if (age < 23.99) return { glyph:"🌗", name:"Last Quarter",    key:"Let Go · Cut" };
+  return             { glyph:"🌘", name:"Waning Crescent", key:"Rest · Surrender" };
+}
+
+const now = new Date();
+const moonAge = getMoonAge(now);
+const moon = getMoonInfo(moonAge);
+
+document.getElementById('todayDate').textContent =
+  now.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long' });
+document.getElementById('todayMoon').textContent = moon.glyph + ' ' + moon.name;
+document.getElementById('todayPhase').textContent = moon.key;
+
+// ── LEVEL SWITCHER ────────────────────────────────────────
+const DURATIONS = {
+  min:   { morning:'15 min', midday:'2 min',  evening:'10 min' },
+  good:  { morning:'35 min', midday:'10 min', evening:'25 min' },
+  ideal: { morning:'60 min', midday:'20 min', evening:'45 min' },
+};
+
+function setLevel(level, clickedTab) {
+  // Update tabs
+  document.querySelectorAll('.level-tab').forEach(t => t.classList.remove('active'));
+  clickedTab.classList.add('active');
+
+  // Update all level content
+  document.querySelectorAll('.level-content').forEach(el => {
+    el.classList.toggle('active', el.classList.contains(level));
+  });
+
+  // Update durations
+  document.getElementById('morning-duration').textContent = DURATIONS[level].morning;
+  document.getElementById('midday-duration').textContent  = DURATIONS[level].midday;
+  document.getElementById('evening-duration').textContent = DURATIONS[level].evening;
+}
+</script>
+</body>
+</html>
