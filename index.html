@@ -5,228 +5,96 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Hedge · Água-Viva</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cinzel:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&display=swap');
 :root {
-  --night: #09080f;
-  --gold: #b8923a;
-  --gold2: #d4ae6a;
-  --water2: #7ab8c8;
-  --parch: #e8e0d0;
-  --muted: #7a7060;
-  --soft: #a89880;
-  --border: rgba(184,146,58,0.15);
+  --night: #09080f; --gold: #b8923a; --gold2: #d4ae6a; --water2: #7ab8c8;
+  --parch: #e8e0d0; --muted: #7a7060; --soft: #a89880; --border: rgba(184,146,58,0.15);
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--night);
-  color: var(--parch);
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 18px;
-  line-height: 1.8;
-  overflow-x: hidden;
-}
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 30% 20%, rgba(74,122,138,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 80%, rgba(184,146,58,0.04) 0%, transparent 60%);
-  pointer-events: none;
-  z-index: 0;
-}
-.stars {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image:
-    radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 22% 35%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 41% 8%, rgba(255,255,255,0.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 58% 25%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 73% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 87% 15%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 6% 68%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 33% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 91% 72%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 65% 88%, rgba(255,255,255,0.35) 0%, transparent 100%);
-}
-.wrap {
-  position: relative; z-index: 1;
-  max-width: 680px; margin: 0 auto;
-  padding: 0 28px 120px;
-}
-header { text-align: center; padding: 80px 0 60px; }
-.moon-glyph {
-  font-size: 42px; display: block; margin-bottom: 20px;
-  letter-spacing: 0.3em; opacity: 0.85;
-  animation: breathe 8s ease-in-out infinite;
-}
-@keyframes breathe {
-  0%, 100% { opacity: 0.7; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.04); }
-}
-.site-name {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(28px, 6vw, 44px);
-  font-weight: 400; color: var(--gold2);
-  letter-spacing: 0.12em;
-  text-shadow: 0 0 40px rgba(184,146,58,0.3);
-  margin-bottom: 6px;
-}
-.site-sub {
-  font-style: italic; font-size: 16px;
-  color: var(--water2); letter-spacing: 0.06em;
-  opacity: 0.8; margin-bottom: 28px;
-}
-.header-rule {
-  width: 120px; height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold), transparent);
-  margin: 0 auto 24px;
-}
-.epigraph {
-  font-style: italic; font-size: 15px; color: var(--muted);
-  max-width: 420px; margin: 0 auto; line-height: 1.7;
-}
-.epigraph cite {
-  display: block; margin-top: 8px; font-style: normal;
-  color: var(--gold); font-family: 'Cinzel', serif;
-  font-size: 10px; letter-spacing: 0.1em;
-}
-.divider {
-  display: flex; align-items: center; gap: 16px;
-  margin: 48px 0 40px; opacity: 0.4;
-}
-.divider::before, .divider::after {
-  content: ''; flex: 1; height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold), transparent);
-}
-.divider span { color: var(--gold); font-size: 16px; }
-.opening { text-align: center; margin-bottom: 56px; }
-.opening p {
-  font-size: 17px; color: var(--soft); line-height: 1.9;
-  max-width: 520px; margin: 0 auto 16px;
-}
-.opening p strong { color: var(--parch); font-weight: 500; }
-.opening p em { color: var(--gold2); }
-.section-tag {
-  font-family: 'Cinzel', serif; font-size: 9px;
-  letter-spacing: 0.4em; color: var(--gold);
-  text-transform: uppercase; display: block;
-  margin-bottom: 8px; opacity: 0.8;
-}
-.section-title {
-  font-family: 'EB Garamond', serif; font-size: 26px;
-  font-style: italic; color: var(--parch);
-  margin-bottom: 16px; font-weight: 400;
-}
-.cards { display: grid; grid-template-columns: 1fr; gap: 2px; margin: 32px 0; }
-.card {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--border);
-  padding: 28px 28px 24px;
-  position: relative; transition: background 0.3s;
-  text-decoration: none; color: inherit; display: block;
-}
-.card:hover { background: rgba(184,146,58,0.04); }
-.card::before {
-  content: ''; position: absolute; top: 0; left: 0;
-  width: 2px; height: 100%;
-  background: var(--card-color, var(--gold));
-  opacity: 0.5; transition: opacity 0.3s;
-}
-.card:hover::before { opacity: 1; }
-.card-label {
-  font-family: 'Cinzel', serif; font-size: 9px;
-  letter-spacing: 0.35em;
-  color: var(--card-color, var(--gold));
-  text-transform: uppercase; display: block;
-  margin-bottom: 8px; opacity: 0.7;
-}
-.card-title { font-size: 19px; font-style: italic; color: var(--parch); margin-bottom: 8px; font-weight: 400; }
-.card-desc { font-size: 15px; color: var(--muted); line-height: 1.65; }
-.card-arrow {
-  position: absolute; right: 24px; top: 50%;
-  transform: translateY(-50%);
-  color: var(--card-color, var(--gold));
-  opacity: 0.3; font-size: 18px;
-  transition: opacity 0.3s, transform 0.3s;
-}
-.card:hover .card-arrow { opacity: 0.7; transform: translateY(-50%) translateX(3px); }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--night); color:var(--parch); font-family:'EB Garamond',Georgia,serif; font-size:18px; line-height:1.8; overflow-x:hidden; }
+body::before { content:''; position:fixed; inset:0; background: radial-gradient(ellipse at 30% 20%,rgba(74,122,138,0.06) 0%,transparent 60%), radial-gradient(ellipse at 70% 80%,rgba(184,146,58,0.04) 0%,transparent 60%); pointer-events:none; z-index:0; }
+.stars { position:fixed; inset:0; z-index:0; pointer-events:none; background-image: radial-gradient(1px 1px at 8% 12%,rgba(255,255,255,0.5) 0%,transparent 100%), radial-gradient(1px 1px at 22% 35%,rgba(255,255,255,0.3) 0%,transparent 100%), radial-gradient(1.5px 1.5px at 41% 8%,rgba(255,255,255,0.6) 0%,transparent 100%), radial-gradient(1px 1px at 58% 25%,rgba(255,255,255,0.4) 0%,transparent 100%), radial-gradient(1px 1px at 73% 60%,rgba(255,255,255,0.3) 0%,transparent 100%), radial-gradient(1.5px 1.5px at 87% 15%,rgba(255,255,255,0.5) 0%,transparent 100%), radial-gradient(1px 1px at 6% 68%,rgba(255,255,255,0.4) 0%,transparent 100%), radial-gradient(1px 1px at 33% 80%,rgba(255,255,255,0.3) 0%,transparent 100%), radial-gradient(1px 1px at 91% 72%,rgba(255,255,255,0.4) 0%,transparent 100%), radial-gradient(1px 1px at 15% 90%,rgba(255,255,255,0.3) 0%,transparent 100%), radial-gradient(1px 1px at 65% 88%,rgba(255,255,255,0.35) 0%,transparent 100%); }
+.wrap { position:relative; z-index:1; max-width:680px; margin:0 auto; padding:0 28px 100px; }
 
-/* MOON WIDGET */
-.moon-now {
-  text-align: center; padding: 48px 24px; margin: 40px 0;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.015);
-  position: relative;
-}
-.moon-now::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold), transparent);
-  opacity: 0.4;
-}
-.moon-now-label {
-  font-family: 'Cinzel', serif; font-size: 9px;
-  letter-spacing: 0.4em; color: var(--gold);
-  text-transform: uppercase; opacity: 0.6;
-  display: block; margin-bottom: 16px;
-}
-.moon-now-glyph {
-  font-size: 64px; display: block; margin-bottom: 14px;
-  line-height: 1; animation: breathe 6s ease-in-out infinite;
-}
-.moon-now-phase {
-  font-family: 'Cinzel', serif; font-size: 13px;
-  letter-spacing: 0.2em; color: var(--gold2);
-  text-transform: uppercase; display: block; margin-bottom: 6px;
-}
-.moon-now-name {
-  font-style: italic; font-size: 20px;
-  color: var(--parch); display: block; margin-bottom: 8px;
-}
-.moon-now-ritual {
-  font-size: 14px; color: var(--muted);
-  font-style: italic; display: block; margin-bottom: 6px;
-}
-.moon-now-date {
-  font-size: 12px; color: var(--muted);
-  font-family: 'Cinzel', serif; letter-spacing: 0.15em;
-  display: block; margin-top: 12px; opacity: 0.5;
-}
+/* TOP NAV */
+.top-nav { display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid rgba(184,146,58,0.1); margin-bottom:0; }
+.top-nav-home { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.3em; color:var(--muted); text-decoration:none; text-transform:uppercase; transition:color 0.2s; opacity:0.6; }
+.top-nav-home:hover { color:var(--gold); opacity:1; }
+.top-nav-title { font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.3em; color:var(--gold); text-transform:uppercase; opacity:0.7; }
 
-.about {
-  margin: 56px 0; padding: 36px 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.about p { font-size: 17px; color: var(--soft); line-height: 1.9; margin-bottom: 16px; }
-.about p:last-child { margin-bottom: 0; }
-.about em { color: var(--gold2); font-style: italic; }
-.about strong { color: var(--parch); font-weight: 500; }
-.quote { padding: 32px 0; text-align: center; }
-.quote p {
-  font-style: italic; font-size: 17px; color: var(--soft);
-  line-height: 1.8; max-width: 480px; margin: 0 auto 10px;
-}
-.quote cite {
-  font-size: 11px; font-style: normal; color: var(--gold);
-  letter-spacing: 0.2em; font-family: 'Cinzel', serif;
-}
-footer { text-align: center; padding: 40px 0 0; border-top: 1px solid var(--border); }
-.footer-glyph { font-size: 22px; display: block; margin-bottom: 12px; opacity: 0.4; }
-footer p { font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.7; }
-@media (max-width: 480px) {
-  .wrap { padding: 0 20px 80px; }
-  header { padding: 56px 0 40px; }
-  .card { padding: 22px 20px 18px; }
-  .card-arrow { display: none; }
-}
+header { text-align:center; padding:52px 0 44px; }
+.moon-glyph { font-size:38px; display:block; margin-bottom:16px; letter-spacing:0.3em; opacity:0.85; animation:breathe 8s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{opacity:0.7;transform:scale(1);} 50%{opacity:1;transform:scale(1.04);} }
+.site-name { font-family:'Cinzel',serif; font-size:clamp(28px,6vw,44px); font-weight:400; color:var(--gold2); letter-spacing:0.12em; text-shadow:0 0 40px rgba(184,146,58,0.3); margin-bottom:6px; }
+.site-sub { font-style:italic; font-size:16px; color:var(--water2); letter-spacing:0.06em; opacity:0.8; margin-bottom:28px; }
+.header-rule { width:120px; height:1px; background:linear-gradient(to right,transparent,var(--gold),transparent); margin:0 auto 24px; }
+.epigraph { font-style:italic; font-size:15px; color:var(--muted); max-width:420px; margin:0 auto; line-height:1.7; }
+.epigraph cite { display:block; margin-top:8px; font-style:normal; color:var(--gold); font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em; }
+
+.divider { display:flex; align-items:center; gap:16px; margin:44px 0 36px; opacity:0.4; }
+.divider::before,.divider::after { content:''; flex:1; height:1px; background:linear-gradient(to right,transparent,var(--gold),transparent); }
+.divider span { color:var(--gold); font-size:16px; }
+
+.opening { text-align:center; margin-bottom:48px; }
+.opening p { font-size:17px; color:var(--soft); line-height:1.9; max-width:520px; margin:0 auto 16px; }
+.opening p strong { color:var(--parch); font-weight:500; }
+.opening p em { color:var(--gold2); }
+
+/* SECTION GROUPS */
+.section-tag { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.4em; color:var(--gold); text-transform:uppercase; display:block; margin-bottom:6px; opacity:0.7; }
+.section-title { font-style:italic; font-size:22px; color:var(--parch); margin-bottom:16px; font-weight:400; }
+
+.card-group { margin-bottom:36px; }
+.group-label { font-family:'Cinzel',serif; font-size:8px; letter-spacing:0.4em; text-transform:uppercase; color:var(--muted); opacity:0.5; display:block; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid rgba(184,146,58,0.08); }
+
+.cards { display:grid; grid-template-columns:1fr; gap:2px; margin-bottom:0; }
+.card { background:rgba(255,255,255,0.02); border:1px solid var(--border); padding:22px 24px 18px; position:relative; transition:background 0.3s; text-decoration:none; color:inherit; display:block; }
+.card:hover { background:rgba(184,146,58,0.04); }
+.card::before { content:''; position:absolute; top:0; left:0; width:2px; height:100%; background:var(--card-color,var(--gold)); opacity:0.5; transition:opacity 0.3s; }
+.card:hover::before { opacity:1; }
+.card-label { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.35em; color:var(--card-color,var(--gold)); text-transform:uppercase; display:block; margin-bottom:6px; opacity:0.7; }
+.card-title { font-size:18px; font-style:italic; color:var(--parch); margin-bottom:6px; font-weight:400; }
+.card-desc { font-size:14px; color:var(--muted); line-height:1.6; }
+.card-arrow { position:absolute; right:20px; top:50%; transform:translateY(-50%); color:var(--card-color,var(--gold)); opacity:0.3; font-size:16px; transition:opacity 0.3s,transform 0.3s; }
+.card:hover .card-arrow { opacity:0.7; transform:translateY(-50%) translateX(3px); }
+
+/* MOON NOW */
+.moon-now { text-align:center; padding:40px 24px; margin:8px 0; border:1px solid var(--border); background:rgba(255,255,255,0.015); position:relative; }
+.moon-now::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(to right,transparent,var(--gold),transparent); opacity:0.4; }
+.moon-now-label { font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.4em; color:var(--gold); text-transform:uppercase; opacity:0.6; display:block; margin-bottom:14px; }
+.moon-now-glyph { font-size:56px; display:block; margin-bottom:12px; line-height:1; animation:breathe 6s ease-in-out infinite; }
+.moon-now-phase { font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.3em; color:var(--gold2); text-transform:uppercase; display:block; margin-bottom:5px; }
+.moon-now-name { font-style:italic; font-size:20px; color:var(--parch); display:block; margin-bottom:8px; }
+.moon-now-ritual { font-size:15px; color:var(--soft); font-style:italic; display:block; margin-bottom:5px; }
+.moon-now-date { font-size:12px; color:var(--muted); font-family:'Cinzel',serif; letter-spacing:0.15em; display:block; margin-top:10px; opacity:0.5; }
+
+.about { margin:40px 0; padding:32px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.about p { font-size:16px; color:var(--soft); line-height:1.9; margin-bottom:14px; }
+.about p:last-child { margin-bottom:0; }
+.about em { color:var(--gold2); }
+.about strong { color:var(--parch); font-weight:500; }
+.quote { padding:28px 0; text-align:center; }
+.quote p { font-style:italic; font-size:16px; color:var(--soft); line-height:1.8; max-width:480px; margin:0 auto 10px; }
+.quote cite { font-size:11px; font-style:normal; color:var(--gold); letter-spacing:0.2em; font-family:'Cinzel',serif; }
+
+footer { text-align:center; padding:36px 0 0; border-top:1px solid var(--border); }
+.footer-glyph { font-size:18px; display:block; margin-bottom:10px; opacity:0.35; }
+footer p { font-size:13px; color:var(--muted); font-style:italic; line-height:1.7; }
+footer a { color:var(--gold); text-decoration:none; opacity:0.6; }
+footer a:hover { opacity:1; }
+
+@media(max-width:480px) { .wrap{padding:0 18px 80px;} header{padding:40px 0 32px;} .card{padding:18px 16px 14px;} .card-arrow{display:none;} }
 </style>
 </head>
 <body>
 <div class="stars"></div>
 <div class="wrap">
+
+  <nav class="top-nav">
+    <a class="top-nav-home" href="https://na-agua.github.io">← na-agua</a>
+    <span class="top-nav-title">The Hedge</span>
+  </nav>
 
   <header>
     <span class="moon-glyph">☽  ✦  ☾</span>
@@ -254,72 +122,96 @@ footer p { font-size: 13px; color: var(--muted); font-style: italic; line-height
   <span class="section-tag">What lives here</span>
   <h2 class="section-title">The Grimoire</h2>
 
-  <div class="cards">
-    <a class="card" href="moon.html" style="--card-color: #b8923a;">
-      <span class="card-label">The Moon</span>
-      <div class="card-title">Lunar Rhythm · Eight Phases</div>
-      <div class="card-desc">What each phase calls for. How to work with the moon rather than against yourself.</div>
-      <span class="card-arrow">→</span>
-    </a>
-    <a class="card" href="wheel.html" style="--card-color: #6a9870;">
-      <span class="card-label">The Wheel</span>
-      <div class="card-title">Eight Sabbats · The Turning Year</div>
-      <div class="card-desc">Yule to Samhain. The seasonal cycle as a map for living.</div>
-      <span class="card-arrow">→</span>
-    </a>
-    <a class="card" href="shadow.html" style="--card-color: #c87880;">
-      <span class="card-label">The Shadow</span>
-      <div class="card-title">Inner Dark · What Hides</div>
-      <div class="card-desc">Shadow work without sweetness. The Crone's knowing. The gift inside the wound.</div>
-      <span class="card-arrow">→</span>
-    </a>
-    <a class="card" href="hedge.html" style="--card-color: #7ab8c8;">
-      <span class="card-label">The Crossing</span>
-      <div class="card-title">Hedge Riding · The Otherworld</div>
-      <div class="card-desc">Crossing the threshold between worlds. Trance, dream, the spirit realm.</div>
-      <span class="card-arrow">→</span>
-    </a>
-    <a class="card" href="lunar-woman.html" style="--card-color: #b8a8d8;">
-      <span class="card-label">Lunar Woman</span>
-      <div class="card-title">Menstrual Cycle · Inner Seasons</div>
-      <div class="card-desc">The body as a lunar instrument. Four inner seasons. The cycle as teacher.</div>
-      <span class="card-arrow">→</span>
-    </a>
-    <a class="card" href="daily-practice.html" style="--card-color: #d4a843;">
-      <span class="card-label">Daily Practice</span>
-      <div class="card-title">Three Anchors · Three Levels</div>
-      <div class="card-desc">Morning, midday, evening. Minimum, good, ideal. The practice that holds everything else together on an ordinary day.</div>
-      <span class="card-arrow">→</span>
-    </a>
-    <a class="card" href="memento-mori.html" style="--card-color: #8a8070;">
-      <span class="card-label">Memento Mori</span>
-      <div class="card-title">One Life · In Weeks</div>
-      <div class="card-desc">Each square is one week. Row labels show year and age. Click any week — title copies to Apple Notes.</div>
-      <span class="card-arrow">→</span>
-    </a>
-    <a class="card" href="integration.html" style="--card-color: #c8884a;">
-      <span class="card-label">The Integration</span>
-      <div class="card-title">After the Experience · Bringing It Down</div>
-      <div class="card-desc">A method for integrating any mystical, psychedelic, or transpersonal experience. For the advanced practitioner.</div>
-      <span class="card-arrow">→</span>
-    </a>
-    <a class="card" href="pachamama.html" style="--card-color: #7a58c8;">
-      <span class="card-label">Pachamama</span>
-      <div class="card-title">The Pregnant Sloth · Violet Eyes</div>
-      <div class="card-desc">A meditation space. She is already here. You only need to be still enough to feel it.</div>
-      <span class="card-arrow">→</span>
-    </a>
-    <a class="card" href="companion.pdf" style="--card-color: #d4ae6a;">
-      <span class="card-label">The Companion</span>
-      <div class="card-title">Complete Hedge Witch Guide · PDF</div>
-      <div class="card-desc">Everything in one document. For the phone, the notebook, the quiet hour.</div>
-      <span class="card-arrow">↓</span>
-    </a>
+  <!-- GROUP: PRACTICE -->
+  <div class="card-group">
+    <span class="group-label">Practice</span>
+    <div class="cards">
+      <a class="card" href="moon.html" style="--card-color:#b8923a;">
+        <span class="card-label">The Moon</span>
+        <div class="card-title">Lunar Rhythm · Eight Phases</div>
+        <div class="card-desc">What each phase calls for. Tonight's moon calculated automatically.</div>
+        <span class="card-arrow">→</span>
+      </a>
+      <a class="card" href="wheel.html" style="--card-color:#6a9870;">
+        <span class="card-label">The Wheel</span>
+        <div class="card-title">Eight Sabbats · The Turning Year</div>
+        <div class="card-desc">Yule to Samhain. The seasonal cycle as a map for living.</div>
+        <span class="card-arrow">→</span>
+      </a>
+      <a class="card" href="daily-practice.html" style="--card-color:#d4a843;">
+        <span class="card-label">Daily Practice</span>
+        <div class="card-title">Three Anchors · Three Levels</div>
+        <div class="card-desc">Morning, midday, evening. Minimum, good, ideal. The ordinary day held with intention.</div>
+        <span class="card-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- GROUP: INNER WORK -->
+  <div class="card-group">
+    <span class="group-label">Inner Work</span>
+    <div class="cards">
+      <a class="card" href="shadow.html" style="--card-color:#c87880;">
+        <span class="card-label">The Shadow</span>
+        <div class="card-title">Inner Dark · What Hides</div>
+        <div class="card-desc">Shadow work without sweetness. The Crone's knowing. The gift inside the wound.</div>
+        <span class="card-arrow">→</span>
+      </a>
+      <a class="card" href="lunar-woman.html" style="--card-color:#b8a8d8;">
+        <span class="card-label">Lunar Woman</span>
+        <div class="card-title">Menstrual Cycle · Inner Seasons</div>
+        <div class="card-desc">The body as a lunar instrument. Four inner seasons. The cycle as teacher.</div>
+        <span class="card-arrow">→</span>
+      </a>
+      <a class="card" href="integration.html" style="--card-color:#c8884a;">
+        <span class="card-label">The Integration</span>
+        <div class="card-title">After the Experience · Bringing It Down</div>
+        <div class="card-desc">For integrating any mystical, psychedelic, or transpersonal experience.</div>
+        <span class="card-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- GROUP: THE CROSSING -->
+  <div class="card-group">
+    <span class="group-label">The Crossing</span>
+    <div class="cards">
+      <a class="card" href="hedge.html" style="--card-color:#7ab8c8;">
+        <span class="card-label">The Crossing</span>
+        <div class="card-title">Hedge Riding · The Otherworld</div>
+        <div class="card-desc">Crossing the threshold between worlds. Trance, dream, the spirit realm.</div>
+        <span class="card-arrow">→</span>
+      </a>
+      <a class="card" href="pachamama.html" style="--card-color:#9878d8;">
+        <span class="card-label">Pachamama</span>
+        <div class="card-title">The Pregnant Sloth · Violet Eyes</div>
+        <div class="card-desc">A meditation space. She is already here. You only need to be still enough.</div>
+        <span class="card-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- GROUP: LIFE -->
+  <div class="card-group">
+    <span class="group-label">Life</span>
+    <div class="cards">
+      <a class="card" href="memento-mori.html" style="--card-color:#8a8070;">
+        <span class="card-label">Memento Mori</span>
+        <div class="card-title">One Life · In Weeks</div>
+        <div class="card-desc">Every week from birth to 100. Click any week — the title copies to Apple Notes.</div>
+        <span class="card-arrow">→</span>
+      </a>
+      <a class="card" href="companion.pdf" style="--card-color:#d4ae6a;">
+        <span class="card-label">The Companion</span>
+        <div class="card-title">Complete Hedge Witch Guide · PDF</div>
+        <div class="card-desc">Everything in one document. For the phone, the notebook, the quiet hour.</div>
+        <span class="card-arrow">↓</span>
+      </a>
+    </div>
   </div>
 
   <div class="divider"><span>·</span></div>
 
-  <!-- LIVE MOON -->
   <div class="moon-now">
     <span class="moon-now-label">Tonight's Moon</span>
     <span class="moon-now-glyph" id="moonGlyph">☽</span>
@@ -334,9 +226,8 @@ footer p { font-size: 13px; color: var(--muted); font-style: italic; line-height
   <div class="about">
     <span class="section-tag">About this place</span>
     <h2 class="section-title">Who writes here</h2>
-    
-    <p>I am a solitary, eclectic witch. I practice at the hedge — the threshold between the ordinary world and whatever lies just beyond it. I work with the moon, with shadow, with dream, with the body as a sacred instrument.</p>
-    <p>I write here <strong>for myself</strong>. To structure what I believe. To have somewhere to return to when I need to practice. If you found this and it serves you — <em>good.</em> Take what you need.</p>
+    <p>A solitary, eclectic witch. Practicing at the hedge — the threshold between the ordinary world and whatever lies just beyond it. Working with the moon, with shadow, with dream, with the body as a sacred instrument.</p>
+    <p>Written <strong>for myself</strong>. To structure what I believe. To have somewhere to return to when I need to practice. If you found this and it serves you — <em>good.</em> Take what you need.</p>
     <p>The hedge does not belong to anyone. It belongs to those who are willing to cross it.</p>
   </div>
 
@@ -355,47 +246,28 @@ footer p { font-size: 13px; color: var(--muted); font-style: italic; line-height
   <footer>
     <span class="footer-glyph">☽ ✦ ☾</span>
     <p>a digital grimoire</p>
-    <p style="margin-top: 8px; font-size: 12px;">
-      Written at the edge of the world, for no one and everyone.<br>
-      Found by whoever was meant to find it.
-    </p>
+    <p style="margin-top:6px;"><a href="https://na-agua.github.io">← na-agua</a></p>
   </footer>
 
 </div>
-
 <script>
-function getMoonPhase(date) {
-  const knownNewMoon = new Date(Date.UTC(2000, 0, 6, 18, 14, 0));
-  const synodicMonth = 29.53059;
-  const diff = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
-  const cycles = diff / synodicMonth;
-  return (cycles - Math.floor(cycles)) * synodicMonth;
-}
-
-function getMoonData(date) {
-  const phase = getMoonPhase(date);
-  const illumination = Math.round((1 - Math.cos((phase / 29.53059) * 2 * Math.PI)) / 2 * 100);
-  let glyph, name, keyword, ritual;
-  if (phase < 1.85)       { glyph="🌑"; name="New Moon";        keyword="Plant · Intend";    ritual="Dark sky, fertile ground. Speak what doesn't exist yet."; }
-  else if (phase < 7.38)  { glyph="🌒"; name="Waxing Crescent"; keyword="Declare · Commit";  ritual="Put your intention into words. Write it. Say it aloud."; }
-  else if (phase < 9.22)  { glyph="🌓"; name="First Quarter";   keyword="Act · Push";        ritual="Take one concrete step. Face resistance. Move."; }
-  else if (phase < 14.77) { glyph="🌔"; name="Waxing Gibbous";  keyword="Refine · Align";    ritual="Almost full. What needs alignment before the peak?"; }
-  else if (phase < 16.61) { glyph="🌕"; name="Full Moon";       keyword="Receive · Release"; ritual="Peak power. Receive what you built. Release what is complete."; }
-  else if (phase < 22.15) { glyph="🌖"; name="Waning Gibbous";  keyword="Gratitude · Give";  ritual="Let abundance flow outward. Give thanks. Share."; }
-  else if (phase < 23.99) { glyph="🌗"; name="Last Quarter";    keyword="Let Go · Cut";      ritual="Actively release. Forgive. Cut cords. Break what needs breaking."; }
-  else                    { glyph="🌘"; name="Waning Crescent"; keyword="Rest · Surrender";  ritual="Empty completely. Don't force. Rest is preparation, not failure."; }
-  return { glyph, name, keyword, ritual, illumination };
-}
-
-const now = new Date();
-const moon = getMoonData(now);
-document.getElementById('moonGlyph').textContent = moon.glyph;
-document.getElementById('moonPhase').textContent = moon.keyword;
-document.getElementById('moonName').textContent = moon.name;
-document.getElementById('moonRitual').textContent = moon.ritual;
-document.getElementById('moonDate').textContent =
-  now.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' })
-  + '  ·  ' + moon.illumination + '% illuminated';
+function getMoonPhase(date){const ref=new Date(Date.UTC(2000,0,6,18,14,0));const syn=29.53059;const diff=(date-ref)/(1000*60*60*24);const c=diff/syn;return(c-Math.floor(c))*syn;}
+function getMoonData(date){const phase=getMoonPhase(date);const illum=Math.round((1-Math.cos((phase/29.53059)*2*Math.PI))/2*100);let glyph,name,keyword,ritual;
+if(phase<1.85){glyph="🌑";name="New Moon";keyword="Plant · Intend";ritual="Dark sky, fertile ground. Speak what doesn't exist yet.";}
+else if(phase<7.38){glyph="🌒";name="Waxing Crescent";keyword="Declare · Commit";ritual="Put your intention into words. Write it. Say it aloud.";}
+else if(phase<9.22){glyph="🌓";name="First Quarter";keyword="Act · Push";ritual="Take one concrete step. Face resistance. Move.";}
+else if(phase<14.77){glyph="🌔";name="Waxing Gibbous";keyword="Refine · Align";ritual="Almost full. What needs alignment before the peak?";}
+else if(phase<16.61){glyph="🌕";name="Full Moon";keyword="Receive · Release";ritual="Peak power. Receive what you built. Release what is complete.";}
+else if(phase<22.15){glyph="🌖";name="Waning Gibbous";keyword="Gratitude · Give";ritual="Let abundance flow outward. Give thanks. Share.";}
+else if(phase<23.99){glyph="🌗";name="Last Quarter";keyword="Let Go · Cut";ritual="Actively release. Forgive. Cut cords. Break what needs breaking.";}
+else{glyph="🌘";name="Waning Crescent";keyword="Rest · Surrender";ritual="Empty completely. Don't force. Rest is preparation, not failure.";}
+return{glyph,name,keyword,ritual,illum};}
+const now=new Date();const moon=getMoonData(now);
+document.getElementById('moonGlyph').textContent=moon.glyph;
+document.getElementById('moonPhase').textContent=moon.keyword;
+document.getElementById('moonName').textContent=moon.name;
+document.getElementById('moonRitual').textContent=moon.ritual;
+document.getElementById('moonDate').textContent=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'  ·  '+moon.illum+'% illuminated';
 </script>
 </body>
 </html>
